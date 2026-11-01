@@ -1,0 +1,440 @@
+{
+  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · DEMO-107 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Tue 3 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "column_settings": [
+        null,
+        null,
+        null,
+        {
+          "is_wrapped": true
+        }
+      ],
+      "rows": [
+        [
+          {
+            "type": "raw_text",
+            "text": "Group"
+          },
+          {
+            "type": "raw_text",
+            "text": "Status"
+          },
+          {
+            "type": "raw_text",
+            "text": "Ref"
+          },
+          {
+            "type": "raw_text",
+            "text": "Update"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Needs attention"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "⛔"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Blocked"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-103",
+                    "text": "DEMO-103"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Migrate billing DB to v2 — In Progress → Blocked"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Needs attention"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "⚠️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " At risk"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-108",
+                    "text": "DEMO-108"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Rotate signing keys — Due 2026-11-04"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Needs attention"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "💬"
+                  },
+                  {
+                    "type": "text",
+                    "text": " New comments"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-104",
+                    "text": "DEMO-104"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Rate limit the public API — 1 new from Alice Chen"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Since Mon 2 Nov"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "✅"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Done"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-101",
+                    "text": "DEMO-101"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Export invoices as CSV — In Progress → Done"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Since Mon 2 Nov"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "↪️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Handed off"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-107",
+                    "text": "DEMO-107"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "DEMO-107 — No longer assigned to you"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-102",
+                    "text": "DEMO-102"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Add retry to the webhook sender — In Progress → In Review · 1 new comment"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-105",
+                    "text": "DEMO-105"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Fix timezone bug in reports — Newly assigned · To Do"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.com/demo-deck",
+                    "text": "demo-skill#1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "Review the demo deck for Friday — demo-skill"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "📝"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Note"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "—"
+          },
+          {
+            "type": "raw_text",
+            "text": "Out 15:00–17:00 (demo dentist)"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Sources: Jira · demo-skill"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

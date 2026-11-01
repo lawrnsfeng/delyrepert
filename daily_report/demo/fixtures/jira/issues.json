@@ -1,0 +1,135 @@
+[
+  {
+    "id": "10101",
+    "key": "DEMO-101",
+    "fields": {
+      "summary": "Export invoices as CSV",
+      "status": {
+        "name": "Done",
+        "statusCategory": {
+          "key": "done"
+        }
+      },
+      "priority": {
+        "name": "High"
+      },
+      "duedate": null,
+      "updated": "2026-11-02T16:00:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10102",
+    "key": "DEMO-102",
+    "fields": {
+      "summary": "Add retry to the webhook sender",
+      "status": {
+        "name": "In Review",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "Medium"
+      },
+      "duedate": null,
+      "updated": "2026-11-02T17:05:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10103",
+    "key": "DEMO-103",
+    "fields": {
+      "summary": "Migrate billing DB to v2",
+      "status": {
+        "name": "Blocked",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "Highest"
+      },
+      "duedate": null,
+      "updated": "2026-11-03T08:00:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10104",
+    "key": "DEMO-104",
+    "fields": {
+      "summary": "Rate limit the public API",
+      "status": {
+        "name": "In Progress",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "Medium"
+      },
+      "duedate": null,
+      "updated": "2026-11-03T07:30:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10105",
+    "key": "DEMO-105",
+    "fields": {
+      "summary": "Fix timezone bug in reports",
+      "status": {
+        "name": "To Do",
+        "statusCategory": {
+          "key": "new"
+        }
+      },
+      "priority": {
+        "name": "Low"
+      },
+      "duedate": null,
+      "updated": "2026-11-03T07:00:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10106",
+    "key": "DEMO-106",
+    "fields": {
+      "summary": "Update onboarding docs",
+      "status": {
+        "name": "In Progress",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "Low"
+      },
+      "duedate": null,
+      "updated": "2026-11-03T06:00:00.000+0000",
+      "customfield_10021": null
+    }
+  },
+  {
+    "id": "10108",
+    "key": "DEMO-108",
+    "fields": {
+      "summary": "Rotate signing keys",
+      "status": {
+        "name": "In Progress",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "High"
+      },
+      "duedate": "2026-11-04",
+      "updated": "2026-11-01T12:00:00.000+0000",
+      "customfield_10021": null
+    }
+  }
+]

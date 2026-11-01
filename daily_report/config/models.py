@@ -78,6 +78,15 @@ class CookConfig(BaseModel):
     timeout_s: int = Field(default=60, ge=1)
 
 
+class DemoConfig(BaseModel):
+    """The `[demo]` table: the test Slack workspace `demo` may post into."""
+
+    slack_team_id: str | None = None  # team_id `auth.test` must report before any post
+    channel: str | None = None  # channel ID in the demo workspace
+    parent_text: str = "(demo)"  # text the seeded parent contains; the finder matches on it
+    state_dir: Path | None = None
+
+
 class Config(BaseModel):
     """The whole daily-report TOML config file."""
 
@@ -91,6 +100,7 @@ class Config(BaseModel):
     slack: SlackConfig | None = None
     post: PostConfig = PostConfig()
     cook: CookConfig = CookConfig()
+    demo: DemoConfig = DemoConfig()
 
     @property
     def zone(self) -> tzinfo:

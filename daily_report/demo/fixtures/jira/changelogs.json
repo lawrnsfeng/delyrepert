@@ -1,0 +1,71 @@
+[
+  {
+    "issueId": "10101",
+    "changeHistories": [
+      {
+        "id": "1010",
+        "author": {
+          "accountId": "demo-owner",
+          "displayName": "Demo Owner",
+          "accountType": "atlassian"
+        },
+        "created": "2026-11-02T16:00:00.000+0000",
+        "items": [
+          {
+            "field": "status",
+            "fieldtype": "jira",
+            "fieldId": "status",
+            "fromString": "In Progress",
+            "toString": "Done"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "issueId": "10102",
+    "changeHistories": [
+      {
+        "id": "1020",
+        "author": {
+          "accountId": "demo-owner",
+          "displayName": "Demo Owner",
+          "accountType": "atlassian"
+        },
+        "created": "2026-11-02T17:00:00.000+0000",
+        "items": [
+          {
+            "field": "status",
+            "fieldtype": "jira",
+            "fieldId": "status",
+            "fromString": "In Progress",
+            "toString": "In Review"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "issueId": "10103",
+    "changeHistories": [
+      {
+        "id": "1030",
+        "author": {
+          "accountId": "demo-owner",
+          "displayName": "Demo Owner",
+          "accountType": "atlassian"
+        },
+        "created": "2026-11-03T08:00:00.000+0000",
+        "items": [
+          {
+            "field": "status",
+            "fieldtype": "jira",
+            "fieldId": "status",
+            "fromString": "In Progress",
+            "toString": "Blocked"
+          }
+        ]
+      }
+    ]
+  }
+]

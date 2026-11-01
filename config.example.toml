@@ -43,6 +43,13 @@ parent_match = { user_id = "U0123456789", text_contains = "Daily standup" }
 # thread (default), thread_broadcast (also show in the channel) or channel (top-level).
 target = "thread"
 
+# `daily-report demo` posts only into this test workspace; omit the table to preview files only.
+# [demo]
+# slack_team_id = "T0123456789"
+# channel = "C0123456789"
+# parent_text = "(demo)"
+# state_dir = "/path/to/demo-state"
+
 # Optional: `compose --cook` runs this program to polish the wording. It gets draft JSON on
 # stdin and prints {"headline": ..., "summaries": {"<id>": "<text>"}}.
 # [cook]

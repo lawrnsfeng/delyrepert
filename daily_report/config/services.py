@@ -68,3 +68,19 @@ class ConfigResolver:
     def _env_path(self, name: str) -> Path | None:
         value = self._environ.get(name, "")
         return Path(value) if value else None
+
+    def demo_token(self) -> str | None:
+        """Return `DAILY_REPORT_DEMO_SLACK_USER_TOKEN`, or `None` when it is unset."""
+        return self._environ.get("DAILY_REPORT_DEMO_SLACK_USER_TOKEN") or None
+
+    def demo_fixtures(self, flag: Path | None) -> Path | None:
+        """Resolve the fixtures dir: `--fixtures-dir`, then `DAILY_REPORT_DEMO_FIXTURES`."""
+        return flag or self._env_path("DAILY_REPORT_DEMO_FIXTURES")
+
+    def demo_state_dir(self, flag: Path | None, config: Config | None) -> Path | None:
+        """Resolve the demo state dir: flag, `DAILY_REPORT_DEMO_STATE_DIR`, `demo.state_dir`."""
+        return (
+            flag
+            or self._env_path("DAILY_REPORT_DEMO_STATE_DIR")
+            or (config.demo.state_dir if config else None)
+        )

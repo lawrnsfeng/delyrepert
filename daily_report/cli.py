@@ -5,6 +5,7 @@ import typer
 from daily_report.collect.commands import collect
 from daily_report.compose.commands import compose, draft_app, preview
 from daily_report.config.services import ConfigResolver
+from daily_report.demo.commands import demo
 from daily_report.effects.commands import DryRunOption
 from daily_report.effects.exceptions import InvalidDryRunValueError
 from daily_report.effects.services import DryRunEffects, RealEffects
@@ -34,3 +35,4 @@ app.command()(note)
 app.command()(post)
 app.command()(preview)
 app.add_typer(draft_app, name="draft")
+app.command()(demo)

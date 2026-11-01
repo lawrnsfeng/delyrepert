@@ -1,0 +1,10 @@
+{
+  "source": "demo-skill",
+  "items": [
+    {
+      "group": "today",
+      "text": "Review the demo deck for Friday",
+      "link": "https://example.com/demo-deck"
+    }
+  ]
+}

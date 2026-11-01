@@ -1,0 +1,61 @@
+{
+  "taken_at": "2026-11-02T09:00:00Z",
+  "issues": {
+    "DEMO-101": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-102": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-103": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-104": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-106": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-107": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": null
+    },
+    "DEMO-108": {
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "checked_at": "2026-11-02T09:00:00Z",
+      "duedate": "2026-11-04"
+    }
+  }
+}

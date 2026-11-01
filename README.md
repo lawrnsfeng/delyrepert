@@ -169,6 +169,49 @@ Notes wait in `<state_dir>/notes/pending.jsonl` (one `{at, text, group}` per
 line, text up to 120 characters) and show as 📝 Note in the next standup.
 `list` and `rm N` are reserved words, so a note cannot be exactly `list`.
 
+## `demo`
+
+```bash
+daily-report demo --out ./demo
+```
+
+Runs the whole flow from built-in mock Jira fixtures (no Jira, no config, no
+state dir needed): an in-process fake Jira, a seeded yesterday snapshot, one
+note and one other-skill context item, with the clock frozen at
+`--as-of 2026-11-03T09:00:00+00:00`. It writes one Block Kit payload per style
+(`bluf`, `ytb`, `table`, `markdown`, `compact`, `cards`, `richlist`) to `--out`
+and prints a Block Kit Builder link for each. State goes to a fresh temp dir
+(printed as `state dir: …`) unless `--state-dir`, `DAILY_REPORT_DEMO_STATE_DIR`
+or `demo.state_dir` names one. Under `--dry-run` nothing is written but `--out`:
+the seeded snapshot is read in place and the snapshot write is only reported.
+
+Flags: `--style NAME` (one style), `--fixtures-dir` (or
+`DAILY_REPORT_DEMO_FIXTURES`; layout `jira/`, `state/snapshots/`,
+`notes/pending.jsonl`, `context/*.json`), `--config`, `--cook` (polish the
+wording with `cook.command`; a rejected answer keeps the script text) and
+`--broadcast`.
+
+With `DAILY_REPORT_DEMO_SLACK_USER_TOKEN` set, the demo also posts into your
+test workspace. It first calls `auth.test` and refuses (exit 5) unless the
+token's team is `demo.slack_team_id`. After you answer `y` to
+`Post 7 replies to #<channel>?` it posts the parent
+`🗓️ Daily standup — 2026-11-03 (demo)` to `demo.channel`, finds it again with
+the real parent finder (text match on `demo.parent_text`, default `(demo)`) and
+adds one reply per style headed `Style n/7 — <name>`. `--broadcast` also shows
+every reply in the channel. `slack.api_url` from the config is used when set.
+
+```toml
+[demo]
+slack_team_id = "T0123456789"   # the test workspace's team ID
+channel = "C0123456789"         # channel the demo posts into
+# parent_text = "(demo)"        # text the finder matches on
+# state_dir = "/path/to/demo-state"
+
+[cook]                          # only used by --cook
+command = ["my-cook", "--json"]
+timeout_s = 60
+```
+
 ## Context from other tools
 
 `compose --context FILE` (repeatable) and each `context.commands` program

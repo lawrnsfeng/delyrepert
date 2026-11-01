@@ -1,0 +1,54 @@
+{
+  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · DEMO-107 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Tue 3 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Needs attention*\n⛔ Blocked · <https://demo.atlassian.net/browse/DEMO-103|DEMO-103> Migrate billing DB to v2 — In Progress → Blocked\n⚠️ At risk · <https://demo.atlassian.net/browse/DEMO-108|DEMO-108> Rotate signing keys — Due 2026-11-04\n💬 New comments · <https://demo.atlassian.net/browse/DEMO-104|DEMO-104> Rate limit the public API — 1 new from Alice Chen"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Since Mon 2 Nov*\n✅ Done · <https://demo.atlassian.net/browse/DEMO-101|DEMO-101> Export invoices as CSV — In Progress → Done\n↪️ Handed off · <https://demo.atlassian.net/browse/DEMO-107|DEMO-107> DEMO-107 — No longer assigned to you"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Today*\n▶️ In progress · <https://demo.atlassian.net/browse/DEMO-102|DEMO-102> Add retry to the webhook sender — In Progress → In Review · 1 new comment\n▶️ In progress · <https://demo.atlassian.net/browse/DEMO-105|DEMO-105> Fix timezone bug in reports — Newly assigned · To Do\n▶️ In progress · <https://example.com/demo-deck|demo-skill#1> Review the demo deck for Friday — demo-skill\n📝 Note · Out 15:00–17:00 (demo dentist)"
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Sources: Jira · demo-skill"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

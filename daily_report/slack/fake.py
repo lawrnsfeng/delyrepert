@@ -41,6 +41,7 @@ class FakeSlack:
     history: list[Json] = field(default_factory=list)
     emoji: dict[str, str] = field(default_factory=dict)
     user_id: str = "U0OWNER"
+    team_id: str = "T0DEMO"
     bot_id: str | None = None
     first_ts: float = 1762077600.0002
     requests: list[RecordedRequest] = field(default_factory=list)
@@ -99,7 +100,7 @@ class FakeSlack:
         return web.json_response(reply, status=scripted.status, headers=headers)
 
     async def _auth_test(self, _: web.Request) -> web.Response:
-        reply: Json = {"ok": True, "user_id": self.user_id}
+        reply: Json = {"ok": True, "user_id": self.user_id, "team_id": self.team_id}
         if self.bot_id:
             reply["bot_id"] = self.bot_id
         return web.json_response(reply)
@@ -114,10 +115,12 @@ class FakeSlack:
         return web.json_response({"ok": True, "emoji": self.emoji})
 
     async def _post_message(self, _: web.Request) -> web.Response:
+        body = self.requests[-1].body
         ts = f"{self.first_ts + len(self.called('chat.postMessage')) - 1:.6f}"
-        return web.json_response(
-            {"ok": True, "channel": self.requests[-1].body["channel"], "ts": ts},
-        )
+        if "thread_ts" not in body:  # a top-level post becomes channel history
+            message = {"ts": ts, "user": self.user_id, "text": body.get("text", "")}
+            self.history.append(message)
+        return web.json_response({"ok": True, "channel": body["channel"], "ts": ts})
 
     async def _permalink(self, _: web.Request) -> web.Response:
         body = self.requests[-1].body
