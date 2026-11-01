@@ -66,3 +66,41 @@ Each unit runs the absolute `daily-report` with `--config <abs>` and loads
    units are not rewritten.
 4. `service status [--json]` (same as `status`) adds `timer_next` and `serve_state`
    (`active|inactive|failed`) to the run status.
+
+<!-- section: Slack listener (step 8) -->
+## Slack listener
+
+`serve` runs a Bolt app over Socket Mode, so the machine needs no public URL.
+
+1. Create the app from `slack/manifest.yaml` (api.slack.com/apps > From manifest). It
+   asks for the bot scopes `commands`, `chat:write` and `im:write`, turns on Socket Mode and
+   interactivity, and defines `/standup`.
+2. Install it to the workspace; put the bot token in `SLACK_BOT_TOKEN`.
+3. Create an app-level token with `connections:write`; put it in `SLACK_APP_TOKEN`.
+4. Set `owner_slack_user_id` in the config (your member ID, `U…`).
+
+Only that user is served: anyone else gets the ephemeral `not authorized` and nothing
+changes. The bot token sends the DM and edits it; the user token (`SLACK_USER_TOKEN`)
+still posts the standup as you.
+
+| Verb | Does |
+|---|---|
+| `/standup run` | Same as `run`; the preview DM follows. `run <id> already in progress` while the lock is held. |
+| `/standup preview` | DM the pending draft again (`no pending draft — /standup run` if none). |
+| `/standup status` | Timer next run, listener state, pause state, last run. |
+| `/standup pause [YYYY-MM-DD]` | Write `paused.json` with `by: slack`. |
+| `/standup resume` | Delete it. |
+| `/standup note <text>` | Add a note (120 characters, group `today`) for the next standup. |
+| `/standup help` | List the verbs. |
+
+The approval DM carries Post, Edit notes and Skip. While `render.style` is unset it shows
+a gallery of all seven styles with a style select (preset `bluf`); the target select is
+preset to `post.target`; Post uses what is selected. Edit notes opens a modal whose note
+joins the inbox and the draft. After the cutoff, Post answers `draft <id> expired at …`.
+Listener down: the draft stays pending and `approve` still works from the CLI. A failed
+scheduled run DMs `❌ Run <id> failed: …`; if that DM fails it is only logged.
+
+`serve --dry-run` resolves config and secrets, calls `auth.test`, prints the verbs and
+action IDs and `[dry-run] would open Socket Mode as <bot user>`, then exits 0 without
+connecting. `serve` logs JSON lines on stderr.
+<!-- end section -->

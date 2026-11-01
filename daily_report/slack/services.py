@@ -78,6 +78,25 @@ class SlackClient:
         request = functools.partial(self._web.chat_getPermalink, channel=channel, message_ts=ts)
         return (await self._call("chat.getPermalink", request, channel=channel))["permalink"]
 
+    async def open_dm(self, user: str) -> str:
+        """Open (or find) the bot's DM with `user`; return its channel ID."""
+        request = functools.partial(self._web.conversations_open, users=user)
+        return (await self._call("conversations.open", request))["channel"]["id"]
+
+    async def update_message(self, channel: str, ts: str, body: dict[str, object]) -> None:
+        """Replace the text and blocks of the message `ts` in `channel` with `body`."""
+        request = functools.partial(
+            self._web.api_call,
+            "chat.update",
+            json={"channel": channel, "ts": ts, **body},
+        )
+        await self._call("chat.update", request, channel=channel)
+
+    async def open_view(self, trigger_id: str, view: dict[str, object]) -> None:
+        """Open the modal `view` for the interaction `trigger_id`."""
+        request = functools.partial(self._web.views_open, trigger_id=trigger_id, view=view)
+        await self._call("views.open", request)
+
     async def _call(
         self,
         method: str,

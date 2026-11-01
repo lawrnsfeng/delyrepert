@@ -134,7 +134,7 @@ def env(tmp_path: Path, jira_site: str, slack_site: str, clock: Clock) -> Servic
     secrets.chmod(0o600)
     config = tmp_path / "config.toml"
     config.write_text(
-        'timezone = "UTC"\n\n'
+        'timezone = "UTC"\nowner_slack_user_id = "U0OWNER"\n\n'
         f'[jira]\nbase_url = "{jira_site.rstrip("/")}"\nemail = "owner@example.com"\n\n'
         f'[slack]\nchannel = "C0STANDUP"\napi_url = "{slack_site.rstrip("/")}{API_PREFIX}"\n'
         'parent_match = { user_id = "U0BOT" }\n',

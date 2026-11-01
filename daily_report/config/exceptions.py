@@ -69,3 +69,24 @@ class CookUnsetError(ConfigError):
     """`--cook` was given but `cook.command` is empty."""
 
     TEMPLATE = "cook.command unset: set it in the config file to use --cook"
+
+
+@dataclass
+class BotTokenUnsetError(ConfigError):
+    """`SLACK_BOT_TOKEN` is not set."""
+
+    TEMPLATE = "SLACK_BOT_TOKEN is not set"
+
+
+@dataclass
+class AppTokenUnsetError(ConfigError):
+    """`SLACK_APP_TOKEN` is not set."""
+
+    TEMPLATE = "SLACK_APP_TOKEN is not set"
+
+
+@dataclass
+class OwnerUnsetError(ConfigError):
+    """The config file has no `owner_slack_user_id`."""
+
+    TEMPLATE = "owner_slack_user_id unset: set it in the config file to your Slack user ID"

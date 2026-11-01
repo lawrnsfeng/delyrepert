@@ -15,6 +15,7 @@ from daily_report.notes.commands import note
 from daily_report.service.commands import approve, pause, resume, run, status
 from daily_report.service.install_commands import service_app
 from daily_report.slack.commands import post
+from daily_report.slack_app.commands import serve
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
@@ -43,5 +44,6 @@ app.command()(approve)
 app.command()(pause)
 app.command()(resume)
 app.command()(status)
+app.command()(serve)
 service_app.command(name="status")(status)
 app.add_typer(service_app, name="service")

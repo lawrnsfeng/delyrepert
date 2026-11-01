@@ -14,6 +14,8 @@ display_name = "Your Name"
 approval_cutoff = "12:00"
 # 0600 env file with SLACK_BOT_TOKEN, SLACK_APP_TOKEN, SLACK_USER_TOKEN and JIRA_API_TOKEN.
 secrets_file = "/path/to/daily-report-secrets.env"
+# Your Slack user ID; `run` and `serve` refuse to start without it, and only you may use /standup.
+owner_slack_user_id = "U0123456789"
 
 # service install: systemd OnCalendar= expression for the scheduled draft (local time).
 schedule = "Mon..Fri *-*-* 09:00:00"

@@ -5,6 +5,8 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from daily_report.config.exceptions import (
+    AppTokenUnsetError,
+    BotTokenUnsetError,
     ConfigFileUnsetError,
     InvalidConfigError,
     SecretsFileUnsetError,
@@ -76,6 +78,20 @@ class ConfigResolver:
         token = self._environ.get("SLACK_USER_TOKEN", "")
         if not token:
             raise SlackTokenUnsetError
+        return token
+
+    def slack_bot_token(self) -> str:
+        """Return `SLACK_BOT_TOKEN`."""
+        token = self._environ.get("SLACK_BOT_TOKEN", "")
+        if not token:
+            raise BotTokenUnsetError
+        return token
+
+    def slack_app_token(self) -> str:
+        """Return `SLACK_APP_TOKEN`."""
+        token = self._environ.get("SLACK_APP_TOKEN", "")
+        if not token:
+            raise AppTokenUnsetError
         return token
 
     def _env_path(self, name: str) -> Path | None:

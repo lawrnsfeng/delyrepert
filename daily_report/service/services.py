@@ -37,6 +37,16 @@ class Poster(Protocol):
         """Post the draft of `run_id`; `None` when nothing was sent (dry-run)."""
 
 
+class RunNotifier(Protocol):
+    """Tells the owner where a run ended up (the Slack DM); it never raises Slack errors."""
+
+    async def pending(self, record: RunRecord, composed: Composed) -> RunRecord:
+        """Announce a run that reached `pending`; return its record, updated if needed."""
+
+    async def failed(self, record: RunRecord) -> None:
+        """Announce a run recorded as `failed`."""
+
+
 class RunStore:
     """`<state_dir>/runs/<run-id>.json`; writes go through Effects."""
 
@@ -165,6 +175,7 @@ class RunService:
         lock: RunLock,
         compose: Callable[[dt.datetime], Awaitable[Composed]],
         zone: dt.tzinfo,
+        notifier: RunNotifier,
         now: Callable[[], dt.datetime] = utc_now,
     ) -> None:
         """Run with these collaborators; `compose(now)` collects, composes and saves the draft."""
@@ -174,6 +185,7 @@ class RunService:
         self._compose = compose
         self._zone = zone
         self._now = now
+        self._notifier = notifier
 
     async def run(self, trigger: Trigger) -> RunRecord:
         """Run once; a paused scheduled run is skipped, a failure is recorded then raised."""
@@ -203,15 +215,15 @@ class RunService:
             try:
                 composed = await self._compose(now)
             except TemplatedError as exc:
-                await self._runs.save(
-                    record.model_copy(update={"status": "failed", "error": str(exc)}),
-                )
+                failed = record.model_copy(update={"status": "failed", "error": str(exc)})
+                await self._runs.save(failed)
+                await self._notifier.failed(failed)
                 raise
             record = record.model_copy(
                 update={"status": "pending", "draft_path": f"drafts/{composed.draft.run_id}.json"},
             )
             await self._runs.save(record)
-            return record
+            return await self._notifier.pending(record, composed)
 
 
 class ApproveService:

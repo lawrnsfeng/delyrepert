@@ -83,5 +83,6 @@ def test_ac3_no_secret_value_reaches_output(env: ServiceEnv, fake_slack: FakeSla
     assert [result.exit_code for result in outputs] == [0, 0]
     shown = "".join(result.output for result in outputs) + json.dumps(env.record())
     assert not [value for value in SECRETS.values() if value in shown]
-    (request,) = fake_slack.called("chat.postMessage")
+    dm, request = fake_slack.called("chat.postMessage")
+    assert dm.authorization == "Bearer s3cr3t-bot"
     assert request.authorization == "Bearer s3cr3t-user"

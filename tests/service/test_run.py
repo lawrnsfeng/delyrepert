@@ -14,7 +14,7 @@ SEARCH = "/rest/api/3/search/jql"
 
 
 def test_ac4_scheduled_run_leaves_a_pending_record(env: ServiceEnv, fake_slack: FakeSlack) -> None:
-    """The record is pending with its draft path, and nothing is posted."""
+    """The record is pending with its draft path; only the owner's DM is sent."""
     result = env.cli("run", "--scheduled")
 
     assert result.exit_code == 0, result.output
@@ -24,7 +24,8 @@ def test_ac4_scheduled_run_leaves_a_pending_record(env: ServiceEnv, fake_slack: 
     assert record["trigger"] == "scheduled"
     assert record["draft_path"] == f"drafts/{RUN_ID}.json"
     assert (env.state / record["draft_path"]).is_file()
-    assert fake_slack.requests == []
+    (sent,) = fake_slack.called("chat.postMessage")
+    assert sent.body["channel"] == "D0U0OWNER"
 
 
 def test_ac6_next_run_expires_older_pending_drafts(env: ServiceEnv, clock: Clock) -> None:

@@ -14,7 +14,7 @@ from daily_report.compose.exceptions import InvalidDraftError
 from daily_report.compose.models import STYLE_NAMES, Posted, StyleName, Target
 from daily_report.compose.render import Renderer
 from daily_report.compose.services import Composed, ComposeService, DraftStore
-from daily_report.config.exceptions import ConfigError
+from daily_report.config.exceptions import ConfigError, OwnerUnsetError
 from daily_report.config.services import ConfigResolver
 from daily_report.context.services import ContextLoader
 from daily_report.effects.commands import DryRunOption, command_effects
@@ -50,6 +50,7 @@ from daily_report.slack.exceptions import (
     StyleUnsetError,
 )
 from daily_report.slack.services import PostService
+from daily_report.slack_app.dm import DmService
 
 SecretsFileOption = Annotated[
     Path | None,
@@ -107,6 +108,13 @@ class _Env:
         except (ConfigError, SecretsError) as exc:
             _fail(exc)
 
+    def owner(self) -> str:
+        """Return `owner_slack_user_id` (exit 2 when unset)."""
+        owner = self.settings.owner_slack_user_id
+        if not owner:
+            fail(OwnerUnsetError(), ExitCode.CONFIG)
+        return owner
+
     @property
     def today(self) -> dt.date:
         """Return today's date in the config zone."""
@@ -128,19 +136,36 @@ def run(
     """Collect and compose now, then hold the draft as pending until it is approved."""
     env = _Env(ctx, config, state_dir, dry_run=dry_run)
     env.with_secrets(secrets_file)
-    service = RunService(
+    try:
+        service = run_service(env)
+    except ConfigError as exc:
+        _fail(exc)
+    try:
+        record = asyncio.run(service.run("scheduled" if scheduled else "cli"))
+    except TemplatedError as exc:
+        _fail(exc)
+    typer.echo(f"{record.run_id} {record.status}")
+
+
+def run_service(env: _Env) -> RunService:
+    """Build the run service: its notifier DMs the owner a pending draft or a failure."""
+    owner = env.owner()
+    dms = DmService.from_config(
+        env.settings,
+        bot_token=env.resolver.slack_bot_token(),
+        owner=owner,
+        state_dir=env.root,
+        effects=env.effects,
+    )
+    return RunService(
         runs=RunStore(env.root, env.effects),
         pauses=PauseStore(env.root, env.effects),
         lock=RunLock(env.root, env.effects),
         compose=lambda now: _compose(env, now),
         zone=env.settings.zone,
         now=services.utc_now,
+        notifier=dms,
     )
-    try:
-        record = asyncio.run(service.run("scheduled" if scheduled else "cli"))
-    except TemplatedError as exc:
-        _fail(exc)
-    typer.echo(f"{record.run_id} {record.status}")
 
 
 async def _compose(env: _Env, now: dt.datetime) -> Composed:

@@ -48,6 +48,7 @@ Config keys:
 | `context.commands` | Optional list of `{name, argv}` programs that print context JSON (see below). |
 | `approval_cutoff` | `HH:MM` local time (default `12:00`) after which a pending draft cannot be approved. |
 | `secrets_file` | The 0600 env file holding the four secrets, see [docs/service.md](docs/service.md). |
+| `owner_slack_user_id` | Your Slack user ID (`U…`). `run` and `serve` exit 2 without it; only this user may use `/standup` and the approval DM. |
 
 ## `collect`
 
@@ -275,6 +276,17 @@ Under dry-run `compose` saves no draft and `note` leaves the inbox untouched.
 | 8 | not pending or already posted |
 | 9 | Slack API error |
 | 10 | the owner must choose (no style, or no parent thread) |
+
+## Slack listener: `serve` and `/standup`
+
+`serve` listens over Slack Socket Mode (no public URL) for `/standup <verb>` and the
+buttons of the approval DM. `run --scheduled` and `/standup run` DM you a preview with
+Post, Edit notes and Skip; nothing reaches the standup channel until you click Post.
+Verbs: `run`, `preview`, `status`, `pause [YYYY-MM-DD]`, `resume`, `note <text>`, `help`.
+Anyone but `owner_slack_user_id` gets `not authorized`. Create the app from
+[slack/manifest.yaml](slack/manifest.yaml); setup and the verb table are in
+[docs/service.md](docs/service.md). `--dry-run serve` is a preflight: it calls
+`auth.test`, lists the verbs and action IDs, and exits 0 without connecting.
 
 ## Development
 

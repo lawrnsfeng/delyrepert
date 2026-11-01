@@ -1,8 +1,9 @@
 """In-process fake of the Slack Web API methods `post` calls.
 
-Serves `auth.test`, `conversations.history`, `emoji.list`, `chat.postMessage` and
-`chat.getPermalink` under `/api/<method>`, records every request and replays scripted errors.
-Shared by the tests and the demo.
+Serves `auth.test`, `conversations.history`, `conversations.open`, `emoji.list`,
+`chat.postMessage`, `chat.getPermalink`, `chat.update` and `views.open` under `/api/<method>`,
+plus a `/response_url` route for interaction replies. It records every request and replays
+scripted errors. Shared by the tests and the demo.
 """
 
 from dataclasses import dataclass, field
@@ -14,6 +15,7 @@ from aiohttp.typedefs import Handler
 type Json = dict[str, Any]
 
 API_PREFIX = "/api/"
+RESPONSE_URL_PATH = "/response_url"  # recorded as method `/response_url`
 
 
 @dataclass(frozen=True)
@@ -76,17 +78,21 @@ class FakeSlack:
         app.router.add_route("*", API_PREFIX + "emoji.list", self._emoji)
         app.router.add_route("*", API_PREFIX + "chat.postMessage", self._post_message)
         app.router.add_route("*", API_PREFIX + "chat.getPermalink", self._permalink)
+        app.router.add_route("*", API_PREFIX + "conversations.open", self._open)
+        app.router.add_route("*", API_PREFIX + "chat.update", self._update)
+        app.router.add_route("*", API_PREFIX + "views.open", self._views_open)
+        app.router.add_route("*", RESPONSE_URL_PATH, self._response_url)
         return app
 
     @web.middleware
     async def _answer(self, request: web.Request, handler: Handler) -> web.StreamResponse:
         method = request.path.removeprefix(API_PREFIX)
-        if request.method == "GET":  # the SDK reads with GET; Slack accepts both verbs
-            body: Json = dict(request.query)
-        elif request.content_type == "application/json":
-            body = await request.json()
-        else:
-            body = {key: str(value) for key, value in (await request.post()).items()}
+        body: Json = dict(request.query)  # the SDK sends some arguments in the query string
+        if request.method != "GET":
+            if request.content_type == "application/json":
+                body |= await request.json()
+            else:
+                body |= {key: str(value) for key, value in (await request.post()).items()}
         authorization = request.headers.get("Authorization", "")
         self.requests.append(RecordedRequest(method, authorization, body))
         queue = self._scripted.get(method)
@@ -127,3 +133,17 @@ class FakeSlack:
         stamp = body["message_ts"].replace(".", "")
         link = f"https://fake.slack.com/archives/{body['channel']}/p{stamp}"
         return web.json_response({"ok": True, "permalink": link})
+
+    async def _open(self, _: web.Request) -> web.Response:
+        users = self.requests[-1].body["users"]
+        return web.json_response({"ok": True, "channel": {"id": f"D0{users}"}})
+
+    async def _update(self, _: web.Request) -> web.Response:
+        body = self.requests[-1].body
+        return web.json_response({"ok": True, "channel": body["channel"], "ts": body["ts"]})
+
+    async def _views_open(self, _: web.Request) -> web.Response:
+        return web.json_response({"ok": True, "view": {"id": "V0FAKE"}})
+
+    async def _response_url(self, _: web.Request) -> web.Response:
+        return web.Response(text="ok")

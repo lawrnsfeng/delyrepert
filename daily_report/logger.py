@@ -14,6 +14,18 @@ def configure_console_logging() -> None:
     )
 
 
+def configure_json_logging() -> None:
+    """Log one JSON object per line to the current stderr (the `serve` listener)."""
+    structlog.configure(
+        processors=[
+            structlog.processors.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso", utc=True),
+            structlog.processors.JSONRenderer(),
+        ],
+        logger_factory=structlog.PrintLoggerFactory(file=sys.stderr),
+    )
+
+
 def get_logger() -> structlog.typing.FilteringBoundLogger:
     """Return the package logger."""
     logger: structlog.typing.FilteringBoundLogger = structlog.get_logger("daily_report")
