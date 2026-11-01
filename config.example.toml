@@ -1,0 +1,17 @@
+# daily-report config. Copy it anywhere and pass it with --config or DAILY_REPORT_CONFIG.
+# Every value below is a placeholder.
+
+# Where snapshots live. --state-dir and DAILY_REPORT_STATE_DIR override it.
+state_dir = "/path/to/daily-report-state"
+
+# IANA zone for "today", snapshot names and working days. Omit it to use the system zone.
+timezone = "Europe/London"
+
+[jira]
+base_url = "https://your-site.atlassian.net"
+email = "you@example.com"
+# Statuses that mark a ticket blocked (case-insensitive).
+blocked_statuses = ["Blocked"]
+# Field whose value flagged_value also marks a ticket blocked; "" disables the check.
+flagged_field = "Flagged"
+flagged_value = "Impediment"

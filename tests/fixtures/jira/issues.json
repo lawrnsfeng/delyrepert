@@ -1,0 +1,21 @@
+[
+  {
+    "id": "10001",
+    "key": "ABC-1",
+    "fields": {
+      "summary": "Ship the login page",
+      "status": {
+        "name": "In Review",
+        "statusCategory": {
+          "key": "indeterminate"
+        }
+      },
+      "priority": {
+        "name": "High"
+      },
+      "duedate": null,
+      "updated": "2026-11-02T15:00:00.000+0000",
+      "customfield_10021": null
+    }
+  }
+]
