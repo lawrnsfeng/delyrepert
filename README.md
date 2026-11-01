@@ -23,6 +23,7 @@ directory: a setting with no source is an error (exit 2).
 | config file | `--config`, then `DAILY_REPORT_CONFIG` |
 | state dir | `--state-dir`, then `DAILY_REPORT_STATE_DIR`, then `state_dir` in the config |
 | Jira API token | `JIRA_API_TOKEN` |
+| Slack user token | `SLACK_USER_TOKEN` (see [docs/slack.md](docs/slack.md)) |
 | dry-run | `--dry-run` (before or after the command), or `DAILY_REPORT_DRY_RUN` |
 
 Config keys:
@@ -39,6 +40,9 @@ Config keys:
 | `display_name` | Optional name shown before the standup headline. |
 | `render.style` | Optional default style (`bluf`, `ytb`, `table`, `markdown`, `compact`, `cards`, `richlist`). Unset: every preview shows all seven. |
 | `emoji.blocked_animated` | Optional animated custom emoji name (no colons) for blocker lines, used only when Slack lists it. |
+| `slack.channel` | Channel ID `post` writes to (`C…`). |
+| `slack.parent_match` | `user_id` and/or `text_contains` that spot today's standup parent message. |
+| `post.target` | Default `thread`; or `thread_broadcast`, `channel`. |
 | `context.commands` | Optional list of `{name, argv}` programs that print context JSON (see below). |
 
 ## `collect`
@@ -84,6 +88,24 @@ daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--re
   100 table rows), done items collapse to bare keys; if it still does not
   fit, that style renders as `compact` and the draft's `render_notice` says
   why. Report warnings, dropped context and the notice go to stderr only.
+
+## `post`
+
+```bash
+daily-report post RUN_ID [--style NAME] [--target thread|thread_broadcast|channel] [--yes]
+```
+
+Posts the draft `compose` saved as `RUN_ID`, as you (the user token), exactly
+once. `thread` replies to today's standup parent (the latest message since
+local midnight that matches `slack.parent_match`); `thread_broadcast` also
+shows the reply in the channel; `channel` posts top-level. No parent today
+exits 10 and suggests `--target channel`. A blocker line uses
+`emoji.blocked_animated` only if `emoji.list` has it, else ⛔. After Slack
+answers `ok`, the draft records `posted` and the notes inbox drops the notes
+the post carried. A second `post` of the same draft exits 8. Without `--yes`
+it shows the target and asks first. Under `--dry-run` it still calls
+`auth.test`, `conversations.history` and `emoji.list`, prints
+`target: …` and the exact request body on stdout, and sends nothing.
 
 ## `note`
 

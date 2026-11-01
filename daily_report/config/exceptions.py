@@ -38,3 +38,17 @@ class TokenUnsetError(ConfigError):
     """`JIRA_API_TOKEN` is not set."""
 
     TEMPLATE = "JIRA_API_TOKEN is not set"
+
+
+@dataclass
+class SlackTokenUnsetError(ConfigError):
+    """`SLACK_USER_TOKEN` is not set."""
+
+    TEMPLATE = "SLACK_USER_TOKEN is not set"
+
+
+@dataclass
+class SlackUnsetError(ConfigError):
+    """The config file has no `[slack]` table."""
+
+    TEMPLATE = "no [slack] table in the config file: set slack.channel and slack.parent_match"

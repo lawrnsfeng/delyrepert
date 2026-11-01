@@ -7,6 +7,7 @@ from pydantic import ValidationError
 from daily_report.config.exceptions import (
     ConfigFileUnsetError,
     InvalidConfigError,
+    SlackTokenUnsetError,
     StateDirUnsetError,
     TokenUnsetError,
 )
@@ -55,6 +56,13 @@ class ConfigResolver:
         token = self._environ.get("JIRA_API_TOKEN", "")
         if not token:
             raise TokenUnsetError
+        return token
+
+    def slack_token(self) -> str:
+        """Return `SLACK_USER_TOKEN`."""
+        token = self._environ.get("SLACK_USER_TOKEN", "")
+        if not token:
+            raise SlackTokenUnsetError
         return token
 
     def _env_path(self, name: str) -> Path | None:

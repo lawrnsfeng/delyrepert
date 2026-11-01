@@ -51,5 +51,6 @@ def clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
         "DAILY_REPORT_STATE_DIR",
         "DAILY_REPORT_DRY_RUN",
         "JIRA_API_TOKEN",
+        "SLACK_USER_TOKEN",
     ):
         monkeypatch.delenv(name, raising=False)

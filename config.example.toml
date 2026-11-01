@@ -32,3 +32,13 @@ blocked_animated = "your-animated-emoji"
 # [[context.commands]]
 # name = "my-skill"
 # argv = ["my-skill", "--json"]
+
+# Where `post` puts the standup. See docs/slack.md for the token scopes and the channel ID.
+[slack]
+channel = "C0123456789"
+# Today's standup parent message: the latest one since midnight matching every rule you set.
+parent_match = { user_id = "U0123456789", text_contains = "Daily standup" }
+
+[post]
+# thread (default), thread_broadcast (also show in the channel) or channel (top-level).
+target = "thread"

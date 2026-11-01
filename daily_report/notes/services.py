@@ -44,6 +44,19 @@ class NotesInbox:
 
         await self._effects.perform(Intent("remove", f"note {number} from {self.path}"), write)
 
+    async def consume(self, posted: list[Note]) -> None:
+        """Drop the notes a posted standup carried (matched by `at`, so preview edits count)."""
+        stamps = {note.at for note in posted}
+        kept = [note for note in self.pending() if note.at not in stamps]
+        text = "".join(note.model_dump_json() + "\n" for note in kept)
+
+        async def write() -> None:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text(text, encoding="utf-8")
+
+        intent = Intent("consume", f"{len(posted)} notes from {self.path}")
+        await self._effects.perform(intent, write)
+
     def _lines(self) -> list[str]:
         if not self.path.exists():
             return []

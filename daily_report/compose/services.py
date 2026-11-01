@@ -1,9 +1,13 @@
 import datetime as dt
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from daily_report.collect.models import Report
+from daily_report.compose.exceptions import InvalidDraftError
 from daily_report.compose.models import Draft, SlackPayload, StyleName
 from daily_report.compose.render import Renderer
 from daily_report.context.services import ContextLoader
@@ -11,18 +15,29 @@ from daily_report.effects.models import Intent
 from daily_report.effects.services import Effects
 from daily_report.notes.services import NotesInbox
 
+_RUN_ID = re.compile(r"\d{8}-\d{6}")
+
 
 class DraftStore:
-    """Writes `<state_dir>/drafts/<run-id>.json` through Effects."""
+    """Reads and writes `<state_dir>/drafts/<run-id>.json`; writes go through Effects."""
 
     def __init__(self, state_dir: Path, effects: Effects) -> None:
         """Keep drafts under `state_dir`."""
         self._folder = state_dir / "drafts"
         self._effects = effects
 
+    def load(self, run_id: str) -> Draft:
+        """Read the draft of `run_id`; raise `InvalidDraftError` if it is missing or invalid."""
+        if not _RUN_ID.fullmatch(run_id):
+            raise InvalidDraftError(run_id, "not a run id (YYYYMMDD-HHMMSS)")
+        try:
+            return Draft.model_validate_json(self._path(run_id).read_bytes())
+        except (OSError, ValidationError) as exc:
+            raise InvalidDraftError(run_id, str(exc)) from exc
+
     async def save(self, draft: Draft) -> None:
         """Write `draft`, replacing an earlier version of the same run."""
-        path = self._folder / f"{draft.run_id}.json"
+        path = self._path(draft.run_id)
         text = draft.model_dump_json(indent=2) + "\n"
 
         async def write() -> None:
@@ -30,6 +45,9 @@ class DraftStore:
             path.write_text(text, encoding="utf-8")
 
         await self._effects.perform(Intent("write", str(path)), write)
+
+    def _path(self, run_id: str) -> Path:
+        return self._folder / f"{run_id}.json"
 
 
 @dataclass(frozen=True)

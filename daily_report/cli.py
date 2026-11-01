@@ -11,6 +11,7 @@ from daily_report.effects.services import DryRunEffects, RealEffects
 from daily_report.exit_codes import ExitCode
 from daily_report.logger import configure_console_logging
 from daily_report.notes.commands import note
+from daily_report.slack.commands import post
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
@@ -30,3 +31,4 @@ def main(ctx: typer.Context, *, dry_run: DryRunOption = False) -> None:
 app.command()(collect)
 app.command()(compose)
 app.command()(note)
+app.command()(post)

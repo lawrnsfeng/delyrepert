@@ -11,6 +11,7 @@ from daily_report.notes.models import Note
 
 # Plain aliases where typer reads the type: it cannot unwrap a `type` statement.
 StyleName = Literal["bluf", "ytb", "table", "markdown", "compact", "cards", "richlist"]
+Target = Literal["thread", "thread_broadcast", "channel"]
 type Kind = Literal[
     "blocked",
     "at_risk",
@@ -22,7 +23,6 @@ type Kind = Literal[
     "context",
 ]
 type Group = Literal["attention", "since", "today"]
-type Target = Literal["thread", "thread_broadcast", "channel"]
 type Block = dict[str, Any]
 
 STYLE_NAMES: tuple[StyleName, ...] = (
