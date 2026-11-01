@@ -24,6 +24,7 @@ directory: a setting with no source is an error (exit 2).
 | state dir | `--state-dir`, then `DAILY_REPORT_STATE_DIR`, then `state_dir` in the config |
 | Jira API token | `JIRA_API_TOKEN` |
 | Slack user token | `SLACK_USER_TOKEN` (see [docs/slack.md](docs/slack.md)) |
+| secrets file | `--secrets-file`, then `DAILY_REPORT_SECRETS_FILE`, then `secrets_file` in the config |
 | dry-run | `--dry-run` (before or after the command), or `DAILY_REPORT_DRY_RUN` |
 
 Config keys:
@@ -44,6 +45,8 @@ Config keys:
 | `slack.parent_match` | `user_id` and/or `text_contains` that spot today's standup parent message. |
 | `post.target` | Default `thread`; or `thread_broadcast`, `channel`. |
 | `context.commands` | Optional list of `{name, argv}` programs that print context JSON (see below). |
+| `approval_cutoff` | `HH:MM` local time (default `12:00`) after which a pending draft cannot be approved. |
+| `secrets_file` | The 0600 env file holding the four secrets, see [docs/service.md](docs/service.md). |
 
 ## `collect`
 
@@ -228,6 +231,15 @@ characters; `link` and `priority` (`blocked`, `at_risk`, `normal`) are
 optional. An invalid item, invalid JSON or a failing command is dropped with a
 reason in the draft's `dropped` list; it never stops the draft. The footer
 names every source.
+
+## Standup service: `run`, `approve`, `pause`, `resume`, `status`
+
+`run [--scheduled]` collects and composes, then keeps the draft *pending*
+(`runs/<id>.json`) until `approve <id> [--style] [--target]` posts it. A draft
+expires at `approval_cutoff` or at the next run. `pause [--until YYYY-MM-DD]`
+makes scheduled runs exit 0 with `skipped: paused`; `resume` lifts it;
+`status [--json]` shows both. `run` and `approve` need the secrets file. See
+[docs/service.md](docs/service.md).
 
 ## Dry-run
 

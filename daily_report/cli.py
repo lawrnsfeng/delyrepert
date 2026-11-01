@@ -12,6 +12,7 @@ from daily_report.effects.services import DryRunEffects, RealEffects
 from daily_report.exit_codes import ExitCode
 from daily_report.logger import configure_console_logging
 from daily_report.notes.commands import note
+from daily_report.service.commands import approve, pause, resume, run, status
 from daily_report.slack.commands import post
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
@@ -36,3 +37,8 @@ app.command()(post)
 app.command()(preview)
 app.add_typer(draft_app, name="draft")
 app.command()(demo)
+app.command()(run)
+app.command()(approve)
+app.command()(pause)
+app.command()(resume)
+app.command()(status)

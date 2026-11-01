@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, tzinfo
+from datetime import UTC, datetime, time, tzinfo
 from pathlib import Path
 from typing import Self
 from zoneinfo import ZoneInfo
@@ -101,6 +101,8 @@ class Config(BaseModel):
     post: PostConfig = PostConfig()
     cook: CookConfig = CookConfig()
     demo: DemoConfig = DemoConfig()
+    approval_cutoff: time = time(12, 0)  # a draft is no longer approvable after this, local time
+    secrets_file: Path | None = None
 
     @property
     def zone(self) -> tzinfo:

@@ -10,6 +10,11 @@ timezone = "Europe/London"
 # Name shown before the standup headline. Omit it to show the headline alone.
 display_name = "Your Name"
 
+# A draft cannot be approved after this local time on the day it was made.
+approval_cutoff = "12:00"
+# 0600 env file with SLACK_BOT_TOKEN, SLACK_APP_TOKEN, SLACK_USER_TOKEN and JIRA_API_TOKEN.
+secrets_file = "/path/to/daily-report-secrets.env"
+
 [jira]
 base_url = "https://your-site.atlassian.net"
 email = "you@example.com"
