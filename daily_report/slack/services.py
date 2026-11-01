@@ -9,7 +9,7 @@ from slack_sdk.errors import SlackApiError
 from slack_sdk.web.async_client import AsyncWebClient
 from slack_sdk.web.async_slack_response import AsyncSlackResponse
 
-from daily_report.compose.models import Posted, StyleName, Target
+from daily_report.compose.models import Draft, Posted, StyleName, Target
 from daily_report.compose.render import Renderer
 from daily_report.compose.services import DraftStore
 from daily_report.config.exceptions import SlackUnsetError
@@ -216,9 +216,19 @@ class PostService:
         """Post the draft of `run_id`; return where it landed (`None` under dry-run)."""
         return await self.send(await self.prepare(run_id, style=style, target=target))
 
-    async def prepare(self, run_id: str, *, style: StyleName, target: Target) -> PostRequest:
-        """Check the draft and the token, find the parent and render the request body."""
-        draft = self._store.load(run_id)
+    async def prepare(
+        self,
+        run_id: str,
+        *,
+        style: StyleName,
+        target: Target,
+        draft: Draft | None = None,
+    ) -> PostRequest:
+        """Check the draft and the token, find the parent and render the request body.
+
+        `draft` stands in for the saved file (a dry-run preview never saves its edits).
+        """
+        draft = draft or self._store.load(run_id)
         if draft.posted:
             raise AlreadyPostedError(run_id, draft.posted.permalink)
         if (await self._client.auth_test()).get("bot_id"):

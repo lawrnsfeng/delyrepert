@@ -7,7 +7,7 @@ import typer
 
 from daily_report.collect.commands import ConfigOption, StateDirOption
 from daily_report.compose.exceptions import InvalidDraftError
-from daily_report.compose.models import StyleName, Target
+from daily_report.compose.models import Draft, StyleName, Target
 from daily_report.config.exceptions import ConfigError
 from daily_report.config.services import ConfigResolver
 from daily_report.effects.commands import DryRunOption, command_effects
@@ -94,9 +94,10 @@ async def _post(
     target: Target,
     yes: bool,
     preview: bool,
+    draft: Draft | None = None,
 ) -> str:
     """Prepare the request, show or confirm it, send it; return the permalink (or "")."""
-    request = await service.prepare(run_id, style=style, target=target)
+    request = await service.prepare(run_id, style=style, target=target, draft=draft)
     if preview:
         typer.echo(request.target_line)
         typer.echo(json.dumps(request.body, indent=2, ensure_ascii=False))

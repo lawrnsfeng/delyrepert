@@ -68,14 +68,15 @@ daily-report collect [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--ou
 
 ```bash
 daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--report PATH|-]
-                     [--context PATH]... [--style NAME] [--out DIR] [--dry-run]
+                     [--context PATH]... [--style NAME] [--out DIR] [--cook] [--dry-run]
 ```
 
 - Takes the report from `--report` (a file, or `-` for stdin), or collects it
   now, exactly as `collect` does (same exit codes 2–4).
 - Adds every pending note and every context item, then saves the draft to
   `<state_dir>/drafts/<run-id>.json` (run id `YYYYMMDD-HHMMSS`).
-- Prints `draft <run-id>`, then one Block Kit Builder link per style. With
+- Prints `draft <run-id>`, a plain-text preview, then one Block Kit Builder link per
+  style (labelled `Style n/7 — name` while all seven show). With
   `--out DIR` it also writes `<style>.json` (the `chat.postMessage` body) per
   style.
 - Renders `--style`, else `render.style`, else all seven styles:
@@ -88,6 +89,55 @@ daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--re
   100 table rows), done items collapse to bare keys; if it still does not
   fit, that style renders as `compact` and the draft's `render_notice` says
   why. Report warnings, dropped context and the notice go to stderr only.
+- In a terminal it then prompts `[p]ost [e]dit [s]tyle [t]arget [c]ancel`
+  (see `preview`). With no terminal it prints
+  `post with: daily-report post <run-id> --style <style> --yes` and exits 0;
+  nothing is posted.
+- `--cook` runs `cook.command` (see below) before rendering.
+
+## `preview`, `draft edit` and `--cook`
+
+```bash
+daily-report preview RUN_ID [--gallery] [--config PATH] [--state-dir PATH]
+daily-report draft edit RUN_ID --from FILE [--config PATH] [--state-dir PATH]
+```
+
+- `preview` shows a saved draft and runs the same prompt loop as `compose`.
+  While `render.style` is unset it shows all seven styles; `--gallery` shows
+  them again later. Keys: `p` posts (asks for a style number if none is set,
+  then offers to save it as `render.style`, the only key daily-report ever
+  writes to your config); `e` opens `$VISUAL`/`$EDITOR` on a YAML file of the
+  editable fields; `s` picks a style; `t` cycles `thread`,
+  `thread_broadcast`, `channel`; `c` cancels and posts nothing. With no
+  `$VISUAL`/`$EDITOR` it prints `edit <state_dir>/drafts/<run-id>.edit.yaml
+  then press Enter`. If no standup thread exists today it offers a top-level
+  post instead.
+- The edit YAML is `{headline, items: [{id, summary, hidden}], notes: [{text,
+  group}]}`. Summaries stay within 120 characters and ids cannot change; a
+  broken edit reopens the editor with `# error: …` on top. Under `--dry-run`
+  the file lives in a system temp dir.
+- `draft edit RUN_ID --from FILE` applies such a YAML to the saved draft (exit 2
+  naming the field if it is invalid; the draft is untouched). The Claude Code
+  skill in `skill/` uses it.
+- `--cook` sets `cook.command` to polish wording only: it gets
+  `{headline, items[{id, kind, title, summary}]}` on stdin (no notes) and must
+  print `{headline, summaries: {id: text}}` (or the same under
+  `structured_output`) within `cook.timeout_s`. Anything else (a missing or
+  extra id, a summary over 120 characters, an extra field, bad JSON, a non-zero
+  exit, a timeout) is rejected: the script text stays and the preview shows
+  `cook rejected: <cause>`. It runs only with `--cook`, also under `--dry-run`.
+
+```toml
+[cook]
+command = ["claude", "-p", "--output-format", "json", "--json-schema", "<schema>"]
+timeout_s = 60
+```
+
+## Claude Code skill
+
+Link `skill/` into your Claude Code skills directory so the `daily-report`
+skill is available. It runs collect, optional context, notes, compose, cook,
+preview and edit, and posts only after you say "post".
 
 ## `post`
 

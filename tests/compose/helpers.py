@@ -2,6 +2,7 @@
 
 import datetime as dt
 import json
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -175,7 +176,11 @@ def _unlink(text: str) -> str:
     return text
 
 
-def run_cli(*args: str, env: dict[str, str] | None = None, stdin: str | None = None) -> Result:
+def run_cli(
+    *args: str,
+    env: Mapping[str, str | None] | None = None,
+    stdin: str | None = None,
+) -> Result:
     """Invoke `daily-report <args>` in-process with a Jira token set."""
     return CliRunner().invoke(
         app,

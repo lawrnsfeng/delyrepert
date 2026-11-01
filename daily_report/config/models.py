@@ -71,6 +71,13 @@ class PostConfig(BaseModel):
     target: Target = "thread"
 
 
+class CookConfig(BaseModel):
+    """The `[cook]` table: the program `compose --cook` runs to polish the wording."""
+
+    command: list[str] = []
+    timeout_s: int = Field(default=60, ge=1)
+
+
 class Config(BaseModel):
     """The whole daily-report TOML config file."""
 
@@ -83,6 +90,7 @@ class Config(BaseModel):
     context: ContextConfig = ContextConfig()
     slack: SlackConfig | None = None
     post: PostConfig = PostConfig()
+    cook: CookConfig = CookConfig()
 
     @property
     def zone(self) -> tzinfo:

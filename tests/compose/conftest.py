@@ -4,6 +4,7 @@ import pytest
 
 from daily_report.jira.fake import FakeJira
 from tests.compose.helpers import r1_baseline, r1_jira
+from tests.slack.conftest import env, fake_slack, slack_url, today  # noqa: F401 - fixtures
 
 
 @pytest.fixture

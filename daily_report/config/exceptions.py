@@ -52,3 +52,10 @@ class SlackUnsetError(ConfigError):
     """The config file has no `[slack]` table."""
 
     TEMPLATE = "no [slack] table in the config file: set slack.channel and slack.parent_match"
+
+
+@dataclass
+class CookUnsetError(ConfigError):
+    """`--cook` was given but `cook.command` is empty."""
+
+    TEMPLATE = "cook.command unset: set it in the config file to use --cook"

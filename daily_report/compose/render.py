@@ -195,9 +195,15 @@ class Layout:
         return f"🟰 *No Jira changes* {self.since}"
 
     @property
+    def sources(self) -> str:
+        """Return the sources line, marked when the AI polished the wording."""
+        parts = [*self.draft.sources, *(["✨ AI-polished"] if self.draft.cooked else [])]
+        return "Sources: " + " · ".join(parts)
+
+    @property
     def footer(self) -> str:
-        """Return the sources line."""
-        return escape("Sources: " + " · ".join(self.draft.sources))
+        """Return the sources line as escaped mrkdwn."""
+        return escape(self.sources)
 
     @property
     def fallback(self) -> str:
@@ -346,7 +352,7 @@ class MarkdownStyle(StyleRenderer):
         lines += [part for part in (layout.counts, layout.no_changes) if part]
         for part in layout.bluf:
             lines += ["", f"**{part.title}**", *(f"- {entry.markdown}" for entry in part.entries)]
-        lines += ["", f"_{'Sources: ' + ' · '.join(layout.draft.sources)}_"]
+        lines += ["", f"_{layout.sources}_"]
         return [{"type": "markdown", "text": "\n".join(lines)}]
 
 

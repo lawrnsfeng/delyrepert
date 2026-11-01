@@ -11,6 +11,7 @@ from daily_report.compose.exceptions import InvalidDraftError
 from daily_report.compose.models import Draft, SlackPayload, StyleName
 from daily_report.compose.render import Renderer
 from daily_report.context.services import ContextLoader
+from daily_report.cook.services import CookService
 from daily_report.effects.models import Intent
 from daily_report.effects.services import Effects
 from daily_report.notes.services import NotesInbox
@@ -61,7 +62,7 @@ class Composed:
 class ComposeService:
     """Builds the draft from report, notes and context, renders it and saves it."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913 - the collaborators a compose needs
         self,
         *,
         inbox: NotesInbox,
@@ -69,13 +70,18 @@ class ComposeService:
         context: ContextLoader,
         renderer: Renderer,
         zone: dt.tzinfo,
+        cook: CookService | None = None,
     ) -> None:
-        """Compose with these collaborators; `zone` names the run and the headline day."""
+        """Compose with these collaborators; `zone` names the run and the headline day.
+
+        `cook` (set by `--cook`) polishes the wording before the draft is rendered and saved.
+        """
         self._inbox = inbox
         self._store = store
         self._context = context
         self._renderer = renderer
         self._zone = zone
+        self._cook = cook
 
     async def compose(
         self,
@@ -94,6 +100,8 @@ class ComposeService:
             created_at=now,
             zone=self._zone,
         )
+        if self._cook:
+            draft = await self._cook.polish(draft)
         payloads = {
             style: self._renderer.render(draft, style, animated_available=False)
             for style in styles
