@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-02T09:00:00Z",
+  "baseline": {
+    "date": "2026-10-30",
+    "taken_at": "2026-10-30T09:00:00Z"
+  },
+  "window": {
+    "start": "2026-10-30T09:00:00Z",
+    "end": "2026-11-02T09:00:00Z"
+  },
+  "items": [
+    {
+      "key": "PAY-412",
+      "url": "https://example.atlassian.net/browse/PAY-412",
+      "title": "Ledger export to the bank",
+      "status": {
+        "name": "Blocked",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "blocked",
+      "jira_priority": "Medium",
+      "summary": "In Progress → Blocked",
+      "events": [
+        {
+          "at": "2026-10-31T10:00:00Z",
+          "type": "status",
+          "author": {
+            "account_id": "owner-1",
+            "display_name": "Owner",
+            "is_me": true
+          },
+          "from": "In Progress",
+          "to": "Blocked",
+          "comment_id": null,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "key": "PAY-398",
+      "url": "https://example.atlassian.net/browse/PAY-398",
+      "title": "Refund webhook retries",
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "at_risk",
+      "jira_priority": "Medium",
+      "summary": "Due 2026-11-03",
+      "events": []
+    },
+    {
+      "key": "PAY-405",
+      "url": "https://example.atlassian.net/browse/PAY-405",
+      "title": "Settlement report totals",
+      "status": {
+        "name": "Done",
+        "category": "done"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "done",
+      "jira_priority": "High",
+      "summary": "In Progress → Done",
+      "events": [
+        {
+          "at": "2026-10-30T15:00:00Z",
+          "type": "status",
+          "author": {
+            "account_id": "owner-1",
+            "display_name": "Owner",
+            "is_me": true
+          },
+          "from": "In Progress",
+          "to": "Done",
+          "comment_id": null,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "key": "PAY-377",
+      "url": "https://example.atlassian.net/browse/PAY-377",
+      "title": "Card BIN lookup cache",
+      "status": {
+        "name": "Done",
+        "category": "done"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "done",
+      "jira_priority": "Medium",
+      "summary": "In Progress → Done",
+      "events": [
+        {
+          "at": "2026-10-30T16:00:00Z",
+          "type": "status",
+          "author": {
+            "account_id": "owner-1",
+            "display_name": "Owner",
+            "is_me": true
+          },
+          "from": "In Progress",
+          "to": "Done",
+          "comment_id": null,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "key": "PAY-420",
+      "url": "https://example.atlassian.net/browse/PAY-420",
+      "title": "Payout scheduler",
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "To Do",
+        "category": "new"
+      },
+      "scope_change": "none",
+      "bucket": "in_progress",
+      "jira_priority": "Medium",
+      "summary": "To Do → In Progress",
+      "events": [
+        {
+          "at": "2026-11-01T09:00:00Z",
+          "type": "status",
+          "author": {
+            "account_id": "owner-1",
+            "display_name": "Owner",
+            "is_me": true
+          },
+          "from": "To Do",
+          "to": "In Progress",
+          "comment_id": null,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "key": "PAY-430",
+      "url": "https://example.atlassian.net/browse/PAY-430",
+      "title": "Currency rounding rules",
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "comment",
+      "jira_priority": "Medium",
+      "summary": "2 new comments",
+      "events": [
+        {
+          "at": "2026-10-31T11:00:00Z",
+          "type": "comment",
+          "author": {
+            "account_id": "dana-1",
+            "display_name": "Dana",
+            "is_me": false
+          },
+          "from": null,
+          "to": null,
+          "comment_id": "c-1",
+          "excerpt": "Should we round half-even?"
+        },
+        {
+          "at": "2026-11-01T11:00:00Z",
+          "type": "comment",
+          "author": {
+            "account_id": "alice-1",
+            "display_name": "Alice",
+            "is_me": false
+          },
+          "from": null,
+          "to": null,
+          "comment_id": "c-2",
+          "excerpt": "Agree with Dana"
+        }
+      ]
+    },
+    {
+      "key": "PAY-431",
+      "url": "https://example.atlassian.net/browse/PAY-431",
+      "title": "Chargeback evidence upload",
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "none",
+      "bucket": "comment",
+      "jira_priority": "Medium",
+      "summary": "1 new comment",
+      "events": [
+        {
+          "at": "2026-10-31T12:00:00Z",
+          "type": "comment",
+          "author": {
+            "account_id": "owner-1",
+            "display_name": "Owner",
+            "is_me": true
+          },
+          "from": null,
+          "to": null,
+          "comment_id": "c-3",
+          "excerpt": "Evidence uploaded"
+        }
+      ]
+    },
+    {
+      "key": "PAY-440",
+      "url": "https://example.atlassian.net/browse/PAY-440",
+      "title": "PAY-440",
+      "status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "previous_status": {
+        "name": "In Progress",
+        "category": "indeterminate"
+      },
+      "scope_change": "left",
+      "bucket": "left_scope",
+      "jira_priority": null,
+      "summary": "No longer assigned to you",
+      "events": []
+    }
+  ],
+  "warnings": []
+}

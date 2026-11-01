@@ -1,11 +1,14 @@
 # daily-report config. Copy it anywhere and pass it with --config or DAILY_REPORT_CONFIG.
 # Every value below is a placeholder.
 
-# Where snapshots live. --state-dir and DAILY_REPORT_STATE_DIR override it.
+# Where snapshots, notes and drafts live. --state-dir and DAILY_REPORT_STATE_DIR override it.
 state_dir = "/path/to/daily-report-state"
 
 # IANA zone for "today", snapshot names and working days. Omit it to use the system zone.
 timezone = "Europe/London"
+
+# Name shown before the standup headline. Omit it to show the headline alone.
+display_name = "Your Name"
 
 [jira]
 base_url = "https://your-site.atlassian.net"
@@ -15,3 +18,17 @@ blocked_statuses = ["Blocked"]
 # Field whose value flagged_value also marks a ticket blocked; "" disables the check.
 flagged_field = "Flagged"
 flagged_value = "Impediment"
+
+[render]
+# One of bluf, ytb, table, markdown, compact, cards, richlist. Leave it unset to see all
+# seven styles in every preview until you pick one.
+# style = "bluf"
+
+[emoji]
+# Animated custom emoji (name without colons) shown on blocker lines when Slack lists it.
+blocked_animated = "your-animated-emoji"
+
+# Programs that print context JSON on stdout; add one table per program.
+# [[context.commands]]
+# name = "my-skill"
+# argv = ["my-skill", "--json"]

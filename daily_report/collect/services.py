@@ -20,12 +20,13 @@ from daily_report.collect.models import (
     Window,
     clip,
 )
-from daily_report.config.models import JiraConfig
+from daily_report.config.models import Config, JiraConfig
 from daily_report.effects.models import Intent
 from daily_report.effects.services import Effects
 from daily_report.jira.exceptions import JiraRequestError
 from daily_report.jira.models import ChangeHistory, IssueFields, JiraComment, JiraIssue, JiraUser
 from daily_report.jira.services import JiraClient
+from daily_report.retry import RetryPolicy
 
 _SNAPSHOT_GLOB = "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"
 _FIRST_RUN_WINDOW = dt.timedelta(days=1)
@@ -231,6 +232,27 @@ class CollectService:
         self._store = store
         self._jira = jira
         self._zone = zone
+
+    @classmethod
+    async def collect(
+        cls,
+        config: Config,
+        *,
+        token: str,
+        state_dir: Path,
+        effects: Effects,
+        as_of: dt.datetime,
+    ) -> Report:
+        """Connect to the configured Jira and build the report as of `as_of`."""
+        jira = config.jira
+        async with JiraClient.connect(
+            base_url=jira.base_url,
+            email=jira.email,
+            token=token,
+            retry=RetryPolicy(),
+        ) as client:
+            store = SnapshotStore(state_dir, effects)
+            return await cls(client=client, store=store, jira=jira, zone=config.zone).run(as_of)
 
     async def run(self, as_of: dt.datetime) -> Report:
         """Build the report as of `as_of` (naive means the config zone) and save the snapshot."""

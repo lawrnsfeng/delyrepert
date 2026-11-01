@@ -1,4 +1,9 @@
 from enum import IntEnum
+from typing import NoReturn
+
+import typer
+
+from daily_report.exc import TemplatedError
 
 
 class ExitCode(IntEnum):
@@ -14,3 +19,9 @@ class ExitCode(IntEnum):
     NOT_PENDING = 8
     SLACK_API = 9
     OWNER_MUST_CHOOSE = 10
+
+
+def fail(exc: TemplatedError, code: ExitCode) -> NoReturn:
+    """Print `exc` on stderr and exit with `code`."""
+    typer.echo(str(exc), err=True)
+    raise typer.Exit(code) from exc
