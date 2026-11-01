@@ -30,7 +30,12 @@ def test_ac10_status_json_before_any_run(env: ServiceEnv) -> None:
     """No pause and no run: both are null."""
     result = env.cli("status", "--json", secrets=False)
 
-    assert json.loads(result.stdout) == {"paused": None, "last_run": None}
+    assert json.loads(result.stdout) == {
+        "paused": None,
+        "last_run": None,
+        "timer_next": None,
+        "serve_state": "inactive",
+    }
 
 
 def test_ac10_status_json_after_pause_and_run(env: ServiceEnv) -> None:
@@ -43,14 +48,19 @@ def test_ac10_status_json_after_pause_and_run(env: ServiceEnv) -> None:
     assert json.loads(result.stdout) == {
         "paused": {"until": "2026-11-10"},
         "last_run": {"id": "20261102-090500", "status": "pending"},
+        "timer_next": None,
+        "serve_state": "inactive",
     }
 
 
 @pytest.mark.parametrize(
     ("args", "expected"),
     [
-        ((), "not paused\nlast run: none\n"),
-        (("--until", "2026-11-10"), "paused until 2026-11-10\nlast run: none\n"),
+        ((), "not paused\nlast run: none\ntimer_next: none\nserve_state: inactive\n"),
+        (
+            ("--until", "2026-11-10"),
+            "paused until 2026-11-10\nlast run: none\ntimer_next: none\nserve_state: inactive\n",
+        ),
         (("--until",), None),
     ],
 )
@@ -60,7 +70,7 @@ def test_ac10_status_text(env: ServiceEnv, args: tuple[str, ...], expected: str 
         env.cli("pause", *args, secrets=False)
     if expected is None:  # a bare pause
         env.cli("pause", secrets=False)
-        expected = "paused\nlast run: none\n"
+        expected = "paused\nlast run: none\ntimer_next: none\nserve_state: inactive\n"
 
     assert env.cli("status", secrets=False).stdout == expected
 

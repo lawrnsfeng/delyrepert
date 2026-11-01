@@ -12,9 +12,10 @@ from typer.testing import CliRunner, Result
 
 from daily_report.cli import app
 from daily_report.jira.fake import FakeJira
-from daily_report.service import services
+from daily_report.service import install_commands, services
 from daily_report.slack.fake import API_PREFIX, FakeSlack
 from tests.compose.helpers import r1_baseline, r1_jira
+from tests.service.systemd import FakeSystemd
 
 NOW = dt.datetime(2026, 11, 2, 9, 5, tzinfo=dt.UTC)
 RUN_ID = "20261102-090500"
@@ -140,3 +141,11 @@ def env(tmp_path: Path, jira_site: str, slack_site: str, clock: Clock) -> Servic
         encoding="utf-8",
     )
     return ServiceEnv(tmp_path, state)
+
+
+@pytest.fixture(autouse=True)
+def fake_systemd(monkeypatch: pytest.MonkeyPatch) -> FakeSystemd:
+    """Never reach the host's systemd: `status` reads from a scripted fake."""
+    systemd = FakeSystemd()
+    monkeypatch.setattr(install_commands, "SubprocessRunner", lambda: systemd)
+    return systemd

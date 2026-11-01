@@ -9,16 +9,6 @@ class ServiceError(TemplatedError):
 
 
 @dataclass
-class SecretsFileUnsetError(ConfigError):
-    """No secrets file source is set."""
-
-    TEMPLATE = (
-        "no secrets file: pass --secrets-file, set DAILY_REPORT_SECRETS_FILE "
-        "or set secrets_file in the config file"
-    )
-
-
-@dataclass
 class PastDateError(ConfigError):
     """`pause --until` names a day before today."""
 

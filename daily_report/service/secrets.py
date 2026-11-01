@@ -1,24 +1,12 @@
 import stat
-from collections.abc import Mapping
 from pathlib import Path
 
-from daily_report.config.models import Config
 from daily_report.service.exceptions import (
     InsecureSecretsError,
     MissingSecretsError,
-    SecretsFileUnsetError,
     UnreadableSecretsError,
 )
 from daily_report.service.models import SECRET_NAMES
-
-
-def secrets_path(flag: Path | None, environ: Mapping[str, str], config: Config) -> Path:
-    """Resolve the secrets file from `--secrets-file`, `DAILY_REPORT_SECRETS_FILE`, then config."""
-    env = environ.get("DAILY_REPORT_SECRETS_FILE", "")
-    path = flag or (Path(env) if env else None) or config.secrets_file
-    if path is None:
-        raise SecretsFileUnsetError
-    return path
 
 
 def load_secrets(path: Path) -> dict[str, str]:

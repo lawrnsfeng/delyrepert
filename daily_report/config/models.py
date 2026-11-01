@@ -103,6 +103,7 @@ class Config(BaseModel):
     demo: DemoConfig = DemoConfig()
     approval_cutoff: time = time(12, 0)  # a draft is no longer approvable after this, local time
     secrets_file: Path | None = None
+    schedule: str = "Mon..Fri *-*-* 09:00:00"  # systemd OnCalendar= expression
 
     @property
     def zone(self) -> tzinfo:

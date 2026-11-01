@@ -34,6 +34,16 @@ class StateDirUnsetError(ConfigError):
 
 
 @dataclass
+class SecretsFileUnsetError(ConfigError):
+    """No secrets file source is set."""
+
+    TEMPLATE = (
+        "no secrets file: pass --secrets-file, set DAILY_REPORT_SECRETS_FILE "
+        "or set secrets_file in the config file"
+    )
+
+
+@dataclass
 class TokenUnsetError(ConfigError):
     """`JIRA_API_TOKEN` is not set."""
 

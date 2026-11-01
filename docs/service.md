@@ -32,3 +32,37 @@ A run's status is `running`, `pending`, `posted`, `skipped`, `expired`, `failed`
 Every verb honours `--dry-run`: effects print as `[dry-run] would …` and nothing is
 written or posted. Exit codes are in the README.
 <!-- end section -->
+
+## Running as systemd user units
+
+`daily-report service` manages three systemd **user** units on any systemd Linux
+host (a server or WSL). No root is needed.
+
+| Unit | Role |
+|---|---|
+| `daily-report.timer` | `OnCalendar=<schedule>`, `Persistent=true` (catches up a missed run) |
+| `daily-report-run.service` | oneshot: `daily-report run --scheduled` |
+| `daily-report-serve.service` | `Restart=on-failure`: `daily-report serve` |
+
+Each unit runs the absolute `daily-report` with `--config <abs>` and loads
+`EnvironmentFile=<secrets file>`.
+
+### Prerequisites
+
+- **Linger on**, so user units survive logout and reboot: `loginctl enable-linger <user>`.
+  Without it `service install` exits 5 and prints that command.
+- **WSL**: enable systemd in `/etc/wsl.conf` (`[boot]` → `systemd=true`), then `wsl --shutdown`.
+- Config keys `schedule` (an `OnCalendar=` expression, checked with
+  `systemd-analyze calendar`; a bad one exits 2) and `secrets_file`
+  (or `--secrets-file` / `DAILY_REPORT_SECRETS_FILE`).
+
+### Steps
+
+1. `daily-report --dry-run service install --config <file>` shows the units and the
+   `systemctl --user link` / `enable --now` calls without touching anything.
+2. `daily-report service install --config <file>` writes the units to
+   `<state_dir>/systemd/`, links them and enables the timer and the listener.
+3. `service stop` / `service start` act on the timer and the listener; installed
+   units are not rewritten.
+4. `service status [--json]` (same as `status`) adds `timer_next` and `serve_state`
+   (`active|inactive|failed`) to the run status.

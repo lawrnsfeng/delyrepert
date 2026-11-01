@@ -13,6 +13,7 @@ from daily_report.exit_codes import ExitCode
 from daily_report.logger import configure_console_logging
 from daily_report.notes.commands import note
 from daily_report.service.commands import approve, pause, resume, run, status
+from daily_report.service.install_commands import service_app
 from daily_report.slack.commands import post
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
@@ -42,3 +43,5 @@ app.command()(approve)
 app.command()(pause)
 app.command()(resume)
 app.command()(status)
+service_app.command(name="status")(status)
+app.add_typer(service_app, name="service")

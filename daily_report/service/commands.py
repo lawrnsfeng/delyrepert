@@ -31,8 +31,9 @@ from daily_report.service.exceptions import (
     RunInProgressError,
     SecretsError,
 )
+from daily_report.service.install_commands import read_units_status
 from daily_report.service.models import Paused
-from daily_report.service.secrets import load_secrets, secrets_path
+from daily_report.service.secrets import load_secrets
 from daily_report.service.services import (
     ApproveService,
     PauseStore,
@@ -101,7 +102,7 @@ class _Env:
     def with_secrets(self, secrets_file: Path | None) -> None:
         """Overlay the secrets file's variables on the environment (exit 2 or 6 on failure)."""
         try:
-            path = secrets_path(secrets_file, os.environ, self.settings)
+            path = self.resolver.secrets_file(secrets_file, self.settings)
             self.resolver = ConfigResolver({**os.environ, **load_secrets(path)})
         except (ConfigError, SecretsError) as exc:
             _fail(exc)
@@ -276,16 +277,18 @@ def status(
     state_dir: StateDirOption = None,
     as_json: Annotated[bool, typer.Option("--json", help="Print JSON.")] = False,
 ) -> None:
-    """Show whether runs are paused and how the last run ended."""
+    """Show whether runs are paused, how the last run ended, and the timer and listener state."""
     env = _Env(ctx, config, state_dir, dry_run=False)
     paused = PauseStore(env.root, env.effects).current()
     runs = RunStore(env.root, env.effects).all()
     last = runs[-1] if runs else None
+    units = asyncio.run(read_units_status(ctx, dry_run=False))
     summary = {
         "paused": {"until": paused.until.isoformat() if paused.until else None}
         if paused
         else None,
         "last_run": {"id": last.run_id, "status": last.status} if last else None,
+        **units.model_dump(),
     }
     if as_json:
         typer.echo(json.dumps(summary))
@@ -295,3 +298,5 @@ def status(
     else:
         typer.echo("not paused")
     typer.echo(f"last run: {last.run_id} {last.status}" if last else "last run: none")
+    typer.echo(f"timer_next: {units.timer_next or 'none'}")
+    typer.echo(f"serve_state: {units.serve_state}")

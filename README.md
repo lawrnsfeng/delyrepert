@@ -44,6 +44,7 @@ Config keys:
 | `slack.channel` | Channel ID `post` writes to (`C…`). |
 | `slack.parent_match` | `user_id` and/or `text_contains` that spot today's standup parent message. |
 | `post.target` | Default `thread`; or `thread_broadcast`, `channel`. |
+| `schedule` | `service install`: systemd `OnCalendar=` expression for the scheduled draft (default `Mon..Fri *-*-* 09:00:00`). |
 | `context.commands` | Optional list of `{name, argv}` programs that print context JSON (see below). |
 | `approval_cutoff` | `HH:MM` local time (default `12:00`) after which a pending draft cannot be approved. |
 | `secrets_file` | The 0600 env file holding the four secrets, see [docs/service.md](docs/service.md). |
@@ -238,8 +239,17 @@ names every source.
 (`runs/<id>.json`) until `approve <id> [--style] [--target]` posts it. A draft
 expires at `approval_cutoff` or at the next run. `pause [--until YYYY-MM-DD]`
 makes scheduled runs exit 0 with `skipped: paused`; `resume` lifts it;
-`status [--json]` shows both. `run` and `approve` need the secrets file. See
+`status [--json]` shows both, plus `timer_next` and `serve_state` from systemd (also `service status`). `run` and `approve` need the secrets file. See
 [docs/service.md](docs/service.md).
+
+## `service`
+
+`daily-report service install|start|stop|status` runs the standup on a systemd
+user timer (`run --scheduled`) and keeps a user service (`serve`) up. Start with
+`daily-report --dry-run service install --config <file>`: it prints the three
+units and every `systemctl` call it would make. Install needs linger on
+(`loginctl enable-linger <user>`; exit 5 otherwise) and a valid `schedule`
+(exit 2). See `docs/service.md`.
 
 ## Dry-run
 

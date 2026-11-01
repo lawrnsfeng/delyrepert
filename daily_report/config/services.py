@@ -7,6 +7,7 @@ from pydantic import ValidationError
 from daily_report.config.exceptions import (
     ConfigFileUnsetError,
     InvalidConfigError,
+    SecretsFileUnsetError,
     SlackTokenUnsetError,
     StateDirUnsetError,
     TokenUnsetError,
@@ -34,11 +35,16 @@ class ConfigResolver:
             return False
         raise InvalidDryRunValueError(value)
 
-    def load(self, flag: Path | None) -> Config:
-        """Load the config file named by `--config`, then `DAILY_REPORT_CONFIG`."""
+    def config_path(self, flag: Path | None) -> Path:
+        """Resolve the config file from `--config`, then `DAILY_REPORT_CONFIG`."""
         path = flag or self._env_path("DAILY_REPORT_CONFIG")
         if path is None:
             raise ConfigFileUnsetError
+        return path
+
+    def load(self, flag: Path | None) -> Config:
+        """Load the config file named by `--config`, then `DAILY_REPORT_CONFIG`."""
+        path = self.config_path(flag)
         try:
             return Config.model_validate(tomllib.loads(path.read_text(encoding="utf-8")))
         except (OSError, tomllib.TOMLDecodeError, ValidationError) as exc:
@@ -49,6 +55,13 @@ class ConfigResolver:
         path = flag or self._env_path("DAILY_REPORT_STATE_DIR") or config.state_dir
         if path is None:
             raise StateDirUnsetError
+        return path
+
+    def secrets_file(self, flag: Path | None, config: Config) -> Path:
+        """Resolve the secrets file from `--secrets-file`, `DAILY_REPORT_SECRETS_FILE`, config."""
+        path = flag or self._env_path("DAILY_REPORT_SECRETS_FILE") or config.secrets_file
+        if path is None:
+            raise SecretsFileUnsetError
         return path
 
     def jira_token(self) -> str:
