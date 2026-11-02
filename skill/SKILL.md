@@ -14,21 +14,23 @@ flow and posts nothing.
 
 ## Flow
 
-1. **Collect.** Run `daily-report collect`. If it exits non-zero, show the message and stop.
-2. **Context.** Ask: "Add context from another skill?" If yes, run that skill so it writes a
-   context JSON file, and keep the path for `--context`.
+1. **Run.** For the owner's own report run `daily-report self`; for the team report run
+   `daily-report standup --format text`. Use no terminal prompts. If it exits non-zero, show the
+   message and stop (exit 3/4 is Jira, 2 is config).
+2. **Context (optional).** Ask: "Add context from another skill?" If yes, run that skill so it
+   writes a context JSON file, and rerun with `--context <file>` (repeatable).
 3. **Notes.** Run `daily-report note list` and show the pending notes. Offer to add one with
-   `daily-report note "<text>" --group attention|today|done`.
-4. **Compose.** Run `daily-report compose --report <report.json> [--context <file>]... --style bluf --mode team`
-   (`--mode self` for the owner's own detailed report) with no terminal attached. Read the `draft <run-id>` line and the preview it prints. Ask whether
-   to cook: if yes, rerun compose with `--cook` (needs `cook.command` in the config). If the
-   preview shows `cook rejected: <cause>`, tell the owner the script wording was kept.
-5. **Preview and edit.** Show the preview. If the owner wants changes, write the edit YAML
-   (`headline`, `items: [{id, summary, hidden}]`, `notes: [{text, group}]`; summaries at most 120
-   characters; ids unchanged) and run `daily-report draft edit <run-id> --from <file>`. On exit 2
-   fix the named field and retry. Run `daily-report preview <run-id>` again to show the result.
-   If `render.style` is unset, show the seven styles and ask which one to use.
-6. **Post.** Only after the owner says "post": run
-   `daily-report post <run-id> --style <style> --yes`. If it exits 10 (no standup thread today),
-   ask whether to post top-level and, if yes, rerun with `--target channel`. Show the permalink it
-   prints. Otherwise, if the owner says "cancel", stop.
+   `daily-report note "<text>" --group attention|today|done`; rerun to include it.
+4. **Show it.** Print the output to the owner to copy and paste into Slack. Offer `--copy` (puts
+   the text on the clipboard) and `--format html --out <file>` for a rich paste that keeps bold
+   and links (open the file in a browser, Select all, Copy, paste into Slack). Ask whether to
+   cook: if yes, rerun with `--cook` (needs `cook.command`); if stderr shows
+   `cook rejected: <cause>`, tell the owner the original wording was kept.
+5. **Post (only if Slack is set up).** `daily-report standup` with `slack.channel` and
+   `SLACK_USER_TOKEN` previews the draft. Only after the owner says "post", run
+   `daily-report post <run-id> --style <style> --yes` (the run id is on the `draft <run-id>` line).
+   If it exits 10 (no standup thread today), ask whether to post top-level and, if yes, rerun with
+   `--target channel`. Show the permalink it prints. Otherwise, if the owner says "cancel", stop.
+
+`daily-report self --dm` also DMs the report to the owner (needs `SLACK_BOT_TOKEN`); it is not a
+post to the team.

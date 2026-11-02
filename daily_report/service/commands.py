@@ -192,6 +192,7 @@ async def _compose(env: _Env, now: dt.datetime) -> Composed:
         context_files=[],
         styles=[chosen] if chosen else list(STYLE_NAMES),
         now=now,
+        mode="team",
     )
 
 

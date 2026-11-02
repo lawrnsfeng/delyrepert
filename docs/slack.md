@@ -1,5 +1,8 @@
 # Slack setup for `daily-report post`
 
+Slack will not give you a token? `daily-report standup` and `daily-report self` need none:
+they print the report to paste by hand. See the README section "No Slack token? Copy and paste".
+
 `post` writes as you, so it needs a **user token** (`xoxp-…`), not a bot token.
 A bot token is refused (exit 2) when `auth.test` returns a `bot_id`.
 

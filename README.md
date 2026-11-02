@@ -5,6 +5,14 @@ standup. No AI is involved: `collect` diffs your Jira tickets against the
 previous snapshot, and `compose` turns that report, your notes and other
 tools' context into a Slack Block Kit draft in seven styles.
 
+## Commands
+
+| Command | Does |
+|---|---|
+| `standup` | Report to my team: preview and post, or print it to paste (see [No Slack token? Copy and paste](#no-slack-token-copy-and-paste)). |
+| `self` | Report to myself, in full detail: print it, copy it, or `--dm` it to myself. |
+| `collect`, `compose`, `preview`, `post`, `note`, `run`, `approve` | The steps behind them, below. |
+
 ## Install
 
 ```bash
@@ -308,11 +316,44 @@ make check   # ruff, mypy, ty, pytest with 100% branch coverage
 make pre     # pre-commit hooks
 ```
 
-## Paste-ready output (when Slack posting is not allowed)
+## No Slack token? Copy and paste
 
-`daily_report.compose.paste.render_paste(draft, "text" | "html", display_name=None)` renders a
-draft, in its own mode, for pasting into Slack by hand. `text` has one line per ticket ending in
-the raw Jira URL (Slack links bare URLs when pasted; `<url|label>` and `[label](url)` do not) and
-no Slack markup. `html` is one self-contained UTF-8 page (inline CSS, no script, no external
-assets) with real links: open it, select all, copy, and paste into Slack to keep bold and links.
-The CLI commands that print them are added with `standup` and `self`.
+`standup` and `self` need only `JIRA_API_TOKEN` and the config file: no `[slack]` table, no
+Slack token. They collect from Jira, compose and print the report so you paste it into Slack by
+hand. Pasted bare URLs stay clickable in Slack; `<url|label>` and `[label](url)` do not.
+
+```bash
+daily-report standup                       # text on stdout, one raw Jira URL per ticket
+daily-report self                          # the detailed report for yourself
+daily-report standup --copy                # also copy the text to the clipboard
+daily-report standup --format html > standup.html   # open it in a browser, Select all, Copy,
+                                           # paste into Slack: keeps bold and links
+daily-report standup --format html --out standup.html
+daily-report standup --format blocks       # Block Kit JSON and a Block Kit Builder link
+```
+
+`--copy` runs the first of `clip.exe`, `wl-copy`, `xclip -selection clipboard`, `pbcopy` that is
+installed (exit 2 naming them when none is). On WSL `clip.exe` works, so `--copy` reaches the
+Windows clipboard. `--copy` only accepts `--format text`: pasted HTML source shows its tags in
+Slack, so `html` and `blocks` with `--copy` exit 2. Under `--dry-run` it prints
+`[dry-run] would copy N characters to the clipboard`.
+
+Paste mode never touches Slack and never consumes pending notes (they are listed in the report).
+Collecting writes today's snapshot, so a `self` or paste run replaces today's baseline, exactly as
+`compose` does.
+
+`self --dm` also sends the report as a Slack DM to `owner_slack_user_id` using `SLACK_BOT_TOKEN`
+(style from `--style`, `render.style`, else `bluf`); a missing token or owner exits 2, a Slack API
+error exits 9.
+
+## `standup` and `self`
+
+| Command | Report | Default output |
+|---|---|---|
+| `standup` | To my team (`team` mode, concise). Scheduled `run` composes the same mode. | The preview and post loop when `slack.channel` is set and `SLACK_USER_TOKEN` is set; otherwise `text`. |
+| `self` | To myself (`self` mode, every detail). Never posts; touches Slack only with `--dm`. | `text` |
+
+Both take `--config`, `--state-dir`, `--as-of`, `--style`, `--cook`, `--context FILE`
+(repeatable), `--format text|html|blocks`, `--copy`, `--out FILE` and `--dry-run`. `compose`,
+`preview`, `post`, `run` and `approve` stay for the step-by-step flow. Only a real post from the
+`standup` loop consumes pending notes.

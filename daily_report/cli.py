@@ -16,6 +16,7 @@ from daily_report.service.commands import approve, pause, resume, run, status
 from daily_report.service.install_commands import service_app
 from daily_report.slack.commands import post
 from daily_report.slack_app.commands import serve
+from daily_report.standup.commands import self_report, standup
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
@@ -34,6 +35,8 @@ def main(ctx: typer.Context, *, dry_run: DryRunOption = False) -> None:
 
 app.command()(collect)
 app.command()(compose)
+app.command()(standup)
+app.command("self")(self_report)
 app.command()(note)
 app.command()(post)
 app.command()(preview)

@@ -7,7 +7,7 @@ from typing import Self
 
 from slack_sdk.web.async_client import AsyncWebClient
 
-from daily_report.compose.models import Draft, StyleName, Target
+from daily_report.compose.models import Draft, SlackPayload, StyleName, Target
 from daily_report.compose.render import Renderer
 from daily_report.compose.services import Composed
 from daily_report.config.exceptions import SlackUnsetError
@@ -97,6 +97,11 @@ class DmService:
             await self._post({"channel": channel or "", "text": self._failure(record)})
         except SlackError as exc:
             get_logger().error("failure DM failed", run_id=record.run_id, reason=str(exc))
+
+    async def send_report(self, payload: SlackPayload) -> None:
+        """DM a rendered report as it is (a `self --dm` run has no run record)."""
+        channel = await self._open()
+        await self._post({"channel": channel or "", **payload.model_dump(mode="json")})
 
     async def send_preview(self, record: RunRecord, draft: Draft) -> RunRecord:
         """DM the preview of `draft` and remember where it went (`dm`) in the run record."""
