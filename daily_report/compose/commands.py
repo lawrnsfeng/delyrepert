@@ -14,7 +14,7 @@ from daily_report.collect.models import Report
 from daily_report.collect.services import CollectService
 from daily_report.compose.edit import apply_edit
 from daily_report.compose.exceptions import InvalidDraftError, InvalidEditError, InvalidReportError
-from daily_report.compose.models import STYLE_NAMES, Draft, StyleName
+from daily_report.compose.models import STYLE_NAMES, Draft, Mode, StyleName
 from daily_report.compose.preview import PreviewLoop
 from daily_report.compose.render import Renderer
 from daily_report.compose.services import Composed, ComposeService, DraftStore
@@ -53,6 +53,7 @@ async def _compose(
     context_files: list[Path],
     styles: list[StyleName],
     cook: bool,
+    mode: Mode,
 ) -> Composed:
     if report is None:
         report = await CollectService.collect(
@@ -82,6 +83,7 @@ async def _compose(
         context_files=context_files,
         styles=styles,
         now=dt.datetime.now(tz=dt.UTC),
+        mode=mode,
     )
 
 
@@ -166,6 +168,10 @@ def compose(
         StyleName | None,
         typer.Option(help="Render only this style. Default: render.style, else all seven."),
     ] = None,
+    mode: Annotated[
+        Mode,
+        typer.Option(help="team: concise report for your team. self: every detail for you."),
+    ] = "team",
     out: Annotated[
         Path | None,
         typer.Option(
@@ -203,6 +209,7 @@ def compose(
             context_files=context or [],
             styles=[chosen] if chosen else list(STYLE_NAMES),
             cook=cook,
+            mode=mode,
         )
         _show(composed, out)
         loop = _loop(
@@ -230,6 +237,10 @@ def preview(
         bool,
         typer.Option("--gallery", help="Show all seven styles even when render.style is set."),
     ] = False,
+    mode: Annotated[
+        Mode | None,
+        typer.Option(help="Switch the draft to this mode (saved). Default: the draft's own."),
+    ] = None,
     dry_run: DryRunOption = False,
 ) -> None:
     """Preview a saved draft and (in a terminal) prompt to post, edit or cancel."""
@@ -251,7 +262,14 @@ def preview(
         style=settings.render.style,
         gallery=gallery,
     )
-    _run(loop.run())
+
+    async def flow() -> None:
+        if mode and mode != draft.mode:
+            loop.draft = draft.model_copy(update={"mode": mode})
+            await DraftStore(root, effects).save(loop.draft)
+        await loop.run()
+
+    _run(flow())
 
 
 draft_app = typer.Typer(help="Work on a saved draft.", no_args_is_help=True)

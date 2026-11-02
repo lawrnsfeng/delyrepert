@@ -4,14 +4,15 @@ import shutil
 import tempfile
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from pathlib import Path
 
 from aiohttp.test_utils import TestServer
 
 from daily_report.collect.services import CollectService, SnapshotStore
-from daily_report.compose.models import Draft, SlackPayload, StyleName
+from daily_report.compose.models import Draft, Mode, SlackPayload, StyleName
 from daily_report.compose.render import Renderer, context
-from daily_report.compose.services import Composed, DraftStore
+from daily_report.compose.services import DraftStore
 from daily_report.config.models import CookConfig, JiraConfig, ParentMatch
 from daily_report.context.services import ContextLoader
 from daily_report.cook.services import CookRunner, CookService
@@ -45,6 +46,17 @@ async def _serve_jira(root: Path) -> AsyncGenerator[str]:
         await server.close()
 
 
+Rendered = dict[tuple[Mode, StyleName], SlackPayload]
+
+
+@dataclass(frozen=True)
+class DemoComposed:
+    """The saved demo draft (in the first mode) and its payload per mode and style."""
+
+    draft: Draft
+    payloads: Rendered
+
+
 class DemoService:
     """Runs collect → compose from the fixtures; every write goes through Effects."""
 
@@ -58,10 +70,11 @@ class DemoService:
         self,
         *,
         as_of: dt.datetime,
+        modes: list[Mode],
         styles: list[StyleName],
         state_dir: Path | None,
         cook_config: CookConfig | None,
-    ) -> tuple[Composed, Path | None]:
+    ) -> tuple[DemoComposed, Path | None]:
         """Return the composed draft and the state dir seeded for it (`None` under dry-run)."""
         seeded = await self._effects.perform(
             Intent("copy", "demo state fixtures into a fresh state dir"),
@@ -94,17 +107,23 @@ class DemoService:
             await ContextLoader([]).load(files),
             created_at=as_of,
             zone=dt.UTC,
+            mode=modes[0],
         )
         if cook_config:
             draft = await self._cook(draft, cook_config)
         payloads = {
-            style: self._renderer.render(draft, style, animated_available=False)
+            (mode, style): self._renderer.render(
+                draft.model_copy(update={"mode": mode}),
+                style,
+                animated_available=False,
+            )
+            for mode in modes
             for style in styles
         }
         notices = [payload.notice for payload in payloads.values() if payload.notice]
         draft = draft.model_copy(update={"render_notice": " · ".join(notices) or None})
         await DraftStore(root, self._effects).save(draft)
-        return Composed(draft, payloads), seeded
+        return DemoComposed(draft, payloads), seeded
 
     async def _seed(self, state_dir: Path | None) -> Path:
         target = state_dir or Path(tempfile.mkdtemp(prefix="daily-report-demo-"))
@@ -152,22 +171,22 @@ class DemoPoster:
         if self._parent_text not in self._seeded:
             raise DemoParentTextError(self._parent_text, self._seeded)
 
-    async def post(self, payloads: dict[StyleName, SlackPayload], *, broadcast: bool) -> None:
-        """Post the parent, find it with the real finder and reply once per style."""
+    async def post(self, payloads: Rendered, *, broadcast: bool) -> None:
+        """Post the parent, find it with the real finder and reply once per mode and style."""
         await self._effects.perform(
             Intent("post", f"parent + {len(payloads)} replies to #{self._channel}"),
             functools.partial(self._post, payloads, broadcast=broadcast),
         )
 
-    async def _post(self, payloads: dict[StyleName, SlackPayload], *, broadcast: bool) -> None:
+    async def _post(self, payloads: Rendered, *, broadcast: bool) -> None:
         await self._client.post_message({"channel": self._channel, "text": self._seeded})
         finder = ParentFinder(self._client, ParentMatch(text_contains=self._parent_text), dt.UTC)
         thread_ts = await finder.find(self._channel, slack_services.utc_now())
-        for number, (style, payload) in enumerate(payloads.items(), 1):
+        for number, ((mode, style), payload) in enumerate(payloads.items(), 1):
             body: dict[str, object] = {"channel": self._channel, "thread_ts": thread_ts}
             if broadcast:
                 body["reply_broadcast"] = True
             body |= payload.model_dump(mode="json")
-            label = context(f"Style {number}/{len(payloads)} — {style}")
+            label = context(f"Style {number}/{len(payloads)} — {mode} {style}")
             body["blocks"] = [label, *payload.blocks]
             await self._client.post_message(body)

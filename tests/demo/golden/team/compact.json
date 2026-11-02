@@ -1,0 +1,40 @@
+{
+  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Tue 3 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "✅ Done · <https://demo.atlassian.net/browse/DEMO-101|DEMO-101> <https://demo.atlassian.net/browse/DEMO-101|Export invoices as CSV>\n▶️ In progress · <https://demo.atlassian.net/browse/DEMO-102|DEMO-102> <https://demo.atlassian.net/browse/DEMO-102|Add retry to the webhook sender>\n▶️ In progress · <https://demo.atlassian.net/browse/DEMO-105|DEMO-105> <https://demo.atlassian.net/browse/DEMO-105|Fix timezone bug in reports>\n▶️ In progress · <https://example.com/demo-deck|Review the demo deck for Friday>\n⚠️ At risk · <https://demo.atlassian.net/browse/DEMO-108|DEMO-108> <https://demo.atlassian.net/browse/DEMO-108|Rotate signing keys> — due Wed 4 Nov\n▶️ In progress · <https://demo.atlassian.net/browse/DEMO-104|DEMO-104> <https://demo.atlassian.net/browse/DEMO-104|Rate limit the public API>\n📝 Note · Out 15:00–17:00 (demo dentist)\n⛔ Blocked · <https://demo.atlassian.net/browse/DEMO-103|DEMO-103> <https://demo.atlassian.net/browse/DEMO-103|Migrate billing DB to v2>"
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Source: Jira"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

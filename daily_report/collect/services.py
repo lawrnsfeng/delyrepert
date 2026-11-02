@@ -158,6 +158,7 @@ class ItemRules:
                 changed=bool(status_events) or entered,
             ),
             jira_priority=fields.priority.name if fields.priority else None,
+            due=fields.duedate,
             summary=clip(" · ".join(parts), SUMMARY_MAX),
             events=events,
         )

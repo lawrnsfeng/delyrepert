@@ -107,3 +107,14 @@ def out_names(out: Path) -> list[str]:
 
 
 STYLE_FILES = sorted(f"{name}.json" for name in STYLE_NAMES)
+MODES = ["self", "team"]
+
+
+def assert_goldens(out: Path, modes: list[str] | None = None) -> None:
+    """`out/<mode>/<style>.json` equals its golden byte for byte, for every mode."""
+    modes = modes or MODES
+    assert out_names(out) == sorted(modes)
+    for mode in modes:
+        assert out_names(out / mode) == STYLE_FILES
+        for name in STYLE_FILES:
+            assert (out / mode / name).read_bytes() == (GOLDEN / mode / name).read_bytes()

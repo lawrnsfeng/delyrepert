@@ -49,6 +49,30 @@
           }
         ]
       }
+    },
+    {
+      "id": "1042",
+      "author": {
+        "accountId": "demo-priya",
+        "displayName": "Priya Nair",
+        "accountType": "atlassian"
+      },
+      "created": "2026-11-03T07:45:00.000+0000",
+      "body": {
+        "type": "doc",
+        "version": 1,
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Customers on the free tier need a lower limit."
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "DEMO-106": [

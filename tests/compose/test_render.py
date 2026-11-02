@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from daily_report.compose.models import STYLE_NAMES, Draft, StyleName
+from daily_report.compose.models import STYLE_NAMES, Draft, Mode, StyleName
 from daily_report.compose.render import Layout, Section
 from tests.compose.helpers import (
     GOLDEN,
@@ -33,7 +33,7 @@ MRKDWN_STYLES: tuple[StyleName, ...] = ("bluf", "ytb", "compact", "cards")
 def sections(parts: list[Section]) -> list[tuple[str, list[str]]]:
     """Return (title, [`<icon> <word> <ref or text>`]) per section."""
     return [
-        (part.title, [f"{e.icon.emoji} {e.icon.word} {e.label or e.text}" for e in part.entries])
+        (part.title, [f"{e.icon.emoji} {e.icon.word} {e.label or e.title}" for e in part.entries])
         for part in parts
     ]
 
@@ -87,11 +87,12 @@ def test_ac2_ytb_sections() -> None:
 
 
 @pytest.mark.parametrize("style", STYLE_NAMES)
-def test_ac3_golden_payloads(style: StyleName) -> None:
-    """Each style is byte-equal to its golden file, never unfurls and fits in 50 blocks."""
-    payload = render(r1_draft(), style)
+@pytest.mark.parametrize("mode", ["team", "self"])
+def test_ac3_golden_payloads(style: StyleName, mode: Mode) -> None:
+    """Each style in each mode is byte-equal to its golden, never unfurls, fits in 50 blocks."""
+    payload = render(r1_draft(mode=mode), style)
 
-    assert payload.as_json == (GOLDEN / f"{style}.json").read_text(encoding="utf-8")
+    assert payload.as_json == (GOLDEN / mode / f"{style}.json").read_text(encoding="utf-8")
     assert (payload.unfurl_links, payload.unfurl_media) == (False, False)
     assert len(payload.blocks) <= 50
 

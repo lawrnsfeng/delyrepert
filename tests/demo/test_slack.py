@@ -6,7 +6,11 @@ import pytest
 from daily_report.slack.fake import FakeSlack
 from tests.demo.helpers import TOKEN, DemoEnv
 
-STYLES = ["bluf", "ytb", "table", "markdown", "compact", "cards", "richlist"]
+STYLES = [
+    f"{mode} {style}"
+    for mode in ("team", "self")
+    for style in ("bluf", "ytb", "table", "markdown", "compact", "cards", "richlist")
+]
 
 
 @pytest.fixture
@@ -39,17 +43,17 @@ def test_ac5_matching_workspace_dry_run_posts_nothing(env: DemoEnv, fake_slack: 
     result = env.run(token=TOKEN, dry_run=True)
 
     assert result.exit_code == 0, result.output
-    assert "[dry-run] would post parent + 7 replies to #C0DEMO" in result.stderr
+    assert "[dry-run] would post parent + 14 replies to #C0DEMO" in result.stderr
     assert fake_slack.called("chat.postMessage") == []
     assert len(fake_slack.called("auth.test")) == 1
 
 
 def test_ac6_posts_parent_then_one_reply_per_style(env: DemoEnv, fake_slack: FakeSlack) -> None:
-    """`y` posts the parent, the finder locates it and 7 replies thread under it."""
+    """`y` posts the parent, the finder locates it and 14 replies thread under it."""
     result = env.run(token=TOKEN, stdin="y\n")
 
     assert result.exit_code == 0, result.output
-    assert "Post 7 replies to #C0DEMO?" in result.stdout
+    assert "Post 14 replies to #C0DEMO?" in result.stdout
     parent, *replies = fake_slack.called("chat.postMessage")
     assert parent.body == {
         "channel": "C0DEMO",
@@ -57,25 +61,25 @@ def test_ac6_posts_parent_then_one_reply_per_style(env: DemoEnv, fake_slack: Fak
     }
     assert len(fake_slack.called("conversations.history")) == 1
     thread_ts = f"{fake_slack.first_ts:.6f}"
-    assert len(replies) == 7
+    assert len(replies) == 14
     for number, (reply, name) in enumerate(zip(replies, STYLES, strict=True), 1):
         assert reply.body["channel"] == "C0DEMO"
         assert reply.body["thread_ts"] == thread_ts
         assert "reply_broadcast" not in reply.body
         label = reply.body["blocks"][0]["elements"][0]["text"]
-        assert label == f"Style {number}/7 — {name}"
-    golden = json.loads((env.out / "bluf.json").read_text("utf-8"))
+        assert label == f"Style {number}/14 — {name}"
+    golden = json.loads((env.out / "team" / "bluf.json").read_text("utf-8"))
     assert replies[0].body["blocks"][1:] == golden["blocks"]
 
 
 def test_ac6_one_style_is_labelled_one_of_one(env: DemoEnv, fake_slack: FakeSlack) -> None:
-    """`--style ytb` posts a single reply."""
-    result = env.run("--style", "ytb", token=TOKEN, stdin="y\n")
+    """`--style ytb --mode self` posts a single reply."""
+    result = env.run("--style", "ytb", "--mode", "self", token=TOKEN, stdin="y\n")
 
     assert result.exit_code == 0, result.output
     assert "Post 1 replies to #C0DEMO?" in result.stdout
     (reply,) = fake_slack.called("chat.postMessage")[1:]
-    assert reply.body["blocks"][0]["elements"][0]["text"] == "Style 1/1 — ytb"
+    assert reply.body["blocks"][0]["elements"][0]["text"] == "Style 1/1 — self ytb"
 
 
 def test_ac7_no_answer_posts_nothing(env: DemoEnv, fake_slack: FakeSlack) -> None:
@@ -93,7 +97,7 @@ def test_ac7_broadcast_marks_every_reply(env: DemoEnv, fake_slack: FakeSlack) ->
     assert result.exit_code == 0, result.output
     parent, *replies = fake_slack.called("chat.postMessage")
     assert "reply_broadcast" not in parent.body
-    assert [reply.body["reply_broadcast"] for reply in replies] == [True] * 7
+    assert [reply.body["reply_broadcast"] for reply in replies] == [True] * 14
 
 
 @pytest.mark.parametrize("key", ["channel", "slack_team_id"])

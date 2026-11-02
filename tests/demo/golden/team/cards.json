@@ -1,5 +1,5 @@
 {
-  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · DEMO-107 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
   "blocks": [
     {
       "type": "header",
@@ -22,61 +22,14 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*Needs attention*"
+        "text": "*Yesterday*"
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "⛔ Blocked · <https://demo.atlassian.net/browse/DEMO-103|DEMO-103> Migrate billing DB to v2 — In Progress → Blocked"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "⚠️ At risk · <https://demo.atlassian.net/browse/DEMO-108|DEMO-108> Rotate signing keys — Due 2026-11-04"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "💬 New comments · <https://demo.atlassian.net/browse/DEMO-104|DEMO-104> Rate limit the public API — 1 new from Alice Chen"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*Since Mon 2 Nov*"
-      }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "✅ Done · <https://demo.atlassian.net/browse/DEMO-101|DEMO-101> Export invoices as CSV — In Progress → Done"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "↪️ Handed off · <https://demo.atlassian.net/browse/DEMO-107|DEMO-107> DEMO-107 — No longer assigned to you"
+        "text": "✅ Done · <https://demo.atlassian.net/browse/DEMO-101|DEMO-101> <https://demo.atlassian.net/browse/DEMO-101|Export invoices as CSV>"
       }
     },
     {
@@ -93,7 +46,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "▶️ In progress · <https://demo.atlassian.net/browse/DEMO-102|DEMO-102> Add retry to the webhook sender — In Progress → In Review · 1 new comment"
+        "text": "▶️ In progress · <https://demo.atlassian.net/browse/DEMO-102|DEMO-102> <https://demo.atlassian.net/browse/DEMO-102|Add retry to the webhook sender>"
       }
     },
     {
@@ -103,7 +56,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "▶️ In progress · <https://demo.atlassian.net/browse/DEMO-105|DEMO-105> Fix timezone bug in reports — Newly assigned · To Do"
+        "text": "▶️ In progress · <https://demo.atlassian.net/browse/DEMO-105|DEMO-105> <https://demo.atlassian.net/browse/DEMO-105|Fix timezone bug in reports>"
       }
     },
     {
@@ -113,7 +66,27 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "▶️ In progress · <https://example.com/demo-deck|demo-skill#1> Review the demo deck for Friday — demo-skill"
+        "text": "▶️ In progress · <https://example.com/demo-deck|Review the demo deck for Friday>"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "⚠️ At risk · <https://demo.atlassian.net/browse/DEMO-108|DEMO-108> <https://demo.atlassian.net/browse/DEMO-108|Rotate signing keys> — due Wed 4 Nov"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "▶️ In progress · <https://demo.atlassian.net/browse/DEMO-104|DEMO-104> <https://demo.atlassian.net/browse/DEMO-104|Rate limit the public API>"
       }
     },
     {
@@ -130,11 +103,28 @@
       "type": "divider"
     },
     {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Blockers*"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "⛔ Blocked · <https://demo.atlassian.net/browse/DEMO-103|DEMO-103> <https://demo.atlassian.net/browse/DEMO-103|Migrate billing DB to v2>"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
       "type": "context",
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Sources: Jira · demo-skill"
+          "text": "Source: Jira"
         }
       ]
     }

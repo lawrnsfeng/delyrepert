@@ -33,6 +33,8 @@ flagged_value = "Impediment"
 # One of bluf, ytb, table, markdown, compact, cards, richlist. Leave it unset to see all
 # seven styles in every preview until you pick one.
 # style = "bluf"
+# Slack team ID: Builder links open in your workspace (the team-less link can lose the payload).
+# builder_team = "T0123456789"
 
 [emoji]
 # Animated custom emoji (name without colons) shown on blocker lines when Slack lists it.

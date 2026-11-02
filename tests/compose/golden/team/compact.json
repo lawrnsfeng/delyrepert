@@ -1,0 +1,40 @@
+{
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · 📝 Out 15:00–17:00 (dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Mon 2 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 2 done · ▶️ 1 today"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "✅ Done · <https://example.atlassian.net/browse/PAY-405|PAY-405> <https://example.atlassian.net/browse/PAY-405|Settlement report totals>\n✅ Done · <https://example.atlassian.net/browse/PAY-377|PAY-377> <https://example.atlassian.net/browse/PAY-377|Card BIN lookup cache>\n▶️ In progress · <https://example.atlassian.net/browse/PAY-431|PAY-431> <https://example.atlassian.net/browse/PAY-431|Chargeback evidence upload>\n▶️ In progress · <https://example.atlassian.net/browse/PAY-420|PAY-420> <https://example.atlassian.net/browse/PAY-420|Payout scheduler>\n⚠️ At risk · <https://example.atlassian.net/browse/PAY-398|PAY-398> <https://example.atlassian.net/browse/PAY-398|Refund webhook retries> — due Tue 3 Nov\n▶️ In progress · <https://example.atlassian.net/browse/PAY-430|PAY-430> <https://example.atlassian.net/browse/PAY-430|Currency rounding rules>\n📝 Note · Out 15:00–17:00 (dentist)\n⛔ Blocked · <https://example.atlassian.net/browse/PAY-412|PAY-412> <https://example.atlassian.net/browse/PAY-412|Ledger export to the bank>"
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Source: Jira"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

@@ -1,0 +1,25 @@
+STANDUP · TUE 3 NOV
+⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today
+
+NEEDS ATTENTION
+⛔ Blocked · DEMO-103 Migrate billing DB to v2 — In Progress → Blocked · https://demo.atlassian.net/browse/DEMO-103
+   Priority Highest · Due Tue 10 Nov
+⚠️ At risk · DEMO-108 Rotate signing keys — Due 2026-11-04 · https://demo.atlassian.net/browse/DEMO-108
+   Priority High
+💬 New comments · DEMO-104 Rate limit the public API — 2 new from Alice Chen · https://demo.atlassian.net/browse/DEMO-104
+   Priority Medium · Alice Chen, Priya Nair: “Can you confirm the rollout date?”
+
+SINCE MON 2 NOV
+✅ Done · DEMO-101 Export invoices as CSV — In Progress → Done · https://demo.atlassian.net/browse/DEMO-101
+   Priority High
+↪️ Handed off · DEMO-107 — No longer assigned to you · https://demo.atlassian.net/browse/DEMO-107
+
+TODAY
+▶️ In progress · DEMO-102 Add retry to the webhook sender — In Progress → In Review · 1 new comment · https://demo.atlassian.net/browse/DEMO-102
+   Priority Medium
+▶️ In progress · DEMO-105 Fix timezone bug in reports — Newly assigned · To Do · https://demo.atlassian.net/browse/DEMO-105
+   Priority Low
+▶️ In progress · demo-skill#1 Review the demo deck for Friday — demo-skill · https://example.com/demo-deck
+📝 Note · Out 15:00–17:00 (demo dentist)
+
+Sources: Jira · demo-skill

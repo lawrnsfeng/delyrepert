@@ -9,9 +9,8 @@ import typer
 from slack_sdk.web.async_client import AsyncWebClient
 
 from daily_report.collect.commands import AsOfOption, ConfigOption
-from daily_report.compose.models import STYLE_NAMES, StyleName
+from daily_report.compose.models import STYLE_NAMES, Mode, StyleName
 from daily_report.compose.render import Renderer
-from daily_report.compose.services import Composed
 from daily_report.config.exceptions import ConfigError, ConfigFileUnsetError
 from daily_report.config.models import Config, CookConfig, DemoConfig
 from daily_report.config.services import ConfigResolver
@@ -21,7 +20,7 @@ from daily_report.demo.exceptions import (
     DemoKeyUnsetError,
     WorkspaceMismatchError,
 )
-from daily_report.demo.services import DEMO_AS_OF, DemoPoster, DemoService
+from daily_report.demo.services import DEMO_AS_OF, DemoComposed, DemoPoster, DemoService
 from daily_report.effects.commands import DryRunOption, command_effects
 from daily_report.effects.services import DryRunEffects, Effects
 from daily_report.exit_codes import ExitCode, fail
@@ -45,7 +44,14 @@ def demo(
     *,
     out: Annotated[
         Path | None,
-        typer.Option(file_okay=False, help="Write <style>.json payloads here (even in dry-run)."),
+        typer.Option(
+            file_okay=False,
+            help="Write <mode>/<style>.json payloads here (even in dry-run).",
+        ),
+    ] = None,
+    mode: Annotated[
+        Mode | None,
+        typer.Option(help="Render only this mode. Default: both team and self."),
     ] = None,
     style: Annotated[
         StyleName | None,
@@ -109,8 +115,10 @@ def demo(
                 _run(
                     service,
                     poster,
+                    modes=[mode] if mode else ["team", "self"],
                     styles=[style] if style else list(STYLE_NAMES),
                     out=out,
+                    builder_team=settings.render.builder_team if settings else None,
                     broadcast=broadcast,
                     state_dir=resolver.demo_state_dir(state_dir, settings),
                     as_of=as_of or DEMO_AS_OF,
@@ -144,22 +152,24 @@ def _poster(
     )
 
 
-def _show(composed: Composed, out: Path | None) -> None:
-    """Write the `--out` files and print one Block Kit Builder link per style."""
-    if out:
-        out.mkdir(parents=True, exist_ok=True)
-    for name, payload in composed.payloads.items():
+def _show(composed: DemoComposed, out: Path | None, builder_team: str | None) -> None:
+    """Write the `--out` files and print one Block Kit Builder link per mode and style."""
+    for (mode, name), payload in composed.payloads.items():
         if out:
-            (out / f"{name}.json").write_text(payload.as_json, encoding="utf-8")
-        typer.echo(payload.builder_url)
+            (out / mode).mkdir(parents=True, exist_ok=True)
+            (out / mode / f"{name}.json").write_text(payload.as_json, encoding="utf-8")
+        typer.echo(f"{mode} {name}", err=True)
+        typer.echo(payload.builder_url(builder_team))
 
 
 async def _run(
     service: DemoService,
     poster: DemoPoster | None,
     *,
+    modes: list[Mode],
     styles: list[StyleName],
     out: Path | None,
+    builder_team: str | None,
     broadcast: bool,
     state_dir: Path | None,
     as_of: dt.datetime,
@@ -171,16 +181,17 @@ async def _run(
         await poster.check()
     composed, seeded = await service.build(
         as_of=as_of,
+        modes=modes,
         styles=styles,
         state_dir=state_dir,
         cook_config=cook_config,
     )
     if seeded:
         typer.echo(f"state dir: {seeded}")
-    _show(composed, out)
+    _show(composed, out, builder_team)
     if poster is None:
         return
-    question = f"Post {len(styles)} replies to #{poster.channel}?"
+    question = f"Post {len(composed.payloads)} replies to #{poster.channel}?"
     if confirm and not typer.confirm(question):
         return
     await poster.post(composed.payloads, broadcast=broadcast)

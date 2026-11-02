@@ -56,6 +56,8 @@ def compose(tmp_path: Path, config: Path, *more: str) -> Draft:
         str(FIXTURES / "r1.json"),
         "--out",
         str(out),
+        "--mode",
+        "self",
         *more,
     )
     assert result.exit_code == 0, result.output

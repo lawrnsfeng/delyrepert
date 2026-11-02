@@ -1,0 +1,484 @@
+{
+  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Tue 3 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "column_settings": [
+        {
+          "align": "left"
+        },
+        {
+          "align": "left"
+        },
+        {
+          "align": "left"
+        },
+        {
+          "align": "left",
+          "is_wrapped": true
+        }
+      ],
+      "rows": [
+        [
+          {
+            "type": "raw_text",
+            "text": "Group"
+          },
+          {
+            "type": "raw_text",
+            "text": "Status"
+          },
+          {
+            "type": "raw_text",
+            "text": "Ref"
+          },
+          {
+            "type": "raw_text",
+            "text": "Update"
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Yesterday"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "✅"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Done"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-101",
+                    "text": "DEMO-101"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-101",
+                    "text": "Export invoices as CSV"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-102",
+                    "text": "DEMO-102"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-102",
+                    "text": "Add retry to the webhook sender"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-105",
+                    "text": "DEMO-105"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-105",
+                    "text": "Fix timezone bug in reports"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "—"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.com/demo-deck",
+                    "text": "Review the demo deck for Friday"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "⚠️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " At risk"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-108",
+                    "text": "DEMO-108"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-108",
+                    "text": "Rotate signing keys"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — due Wed 4 Nov"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "▶️"
+                  },
+                  {
+                    "type": "text",
+                    "text": " In progress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-104",
+                    "text": "DEMO-104"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-104",
+                    "text": "Rate limit the public API"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Today"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "📝"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Note"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "raw_text",
+            "text": "—"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "Out 15:00–17:00 (demo dentist)"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Blockers"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "⛔"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Blocked"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-103",
+                    "text": "DEMO-103"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://demo.atlassian.net/browse/DEMO-103",
+                    "text": "Migrate billing DB to v2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Source: Jira"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

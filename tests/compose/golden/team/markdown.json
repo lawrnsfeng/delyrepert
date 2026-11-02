@@ -1,0 +1,11 @@
+{
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · 📝 Out 15:00–17:00 (dentist)",
+  "blocks": [
+    {
+      "type": "markdown",
+      "text": "## Standup · Mon 2 Nov\n⛔ 1 blocked · ⚠️ 1 at risk · ✅ 2 done · ▶️ 1 today\n\n**Yesterday**\n- ✅ Done · [PAY-405](https://example.atlassian.net/browse/PAY-405) [Settlement report totals](https://example.atlassian.net/browse/PAY-405)\n- ✅ Done · [PAY-377](https://example.atlassian.net/browse/PAY-377) [Card BIN lookup cache](https://example.atlassian.net/browse/PAY-377)\n- ▶️ In progress · [PAY-431](https://example.atlassian.net/browse/PAY-431) [Chargeback evidence upload](https://example.atlassian.net/browse/PAY-431)\n\n**Today**\n- ▶️ In progress · [PAY-420](https://example.atlassian.net/browse/PAY-420) [Payout scheduler](https://example.atlassian.net/browse/PAY-420)\n- ⚠️ At risk · [PAY-398](https://example.atlassian.net/browse/PAY-398) [Refund webhook retries](https://example.atlassian.net/browse/PAY-398) — due Tue 3 Nov\n- ▶️ In progress · [PAY-430](https://example.atlassian.net/browse/PAY-430) [Currency rounding rules](https://example.atlassian.net/browse/PAY-430)\n- 📝 Note · Out 15:00–17:00 (dentist)\n\n**Blockers**\n- ⛔ Blocked · [PAY-412](https://example.atlassian.net/browse/PAY-412) [Ledger export to the bank](https://example.atlassian.net/browse/PAY-412)\n\n_Source: Jira_"
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

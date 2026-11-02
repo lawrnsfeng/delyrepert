@@ -22,6 +22,7 @@ class RenderConfig(BaseModel):
     """The `[render]` table."""
 
     style: StyleName | None = None  # unset: every preview shows all seven styles
+    builder_team: str | None = None  # Slack team ID: Builder links open in that workspace
 
 
 class EmojiConfig(BaseModel):

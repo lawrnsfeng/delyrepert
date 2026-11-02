@@ -229,3 +229,18 @@ def test_preview_warnings_go_to_stderr(tmp_path: Path, config_file: Path) -> Non
     assert "jira issue skipped" in result.stderr
     assert "context dropped" in result.stderr
     assert "cards exceeds 50 blocks; showing compact" in result.stderr
+
+
+@pytest.mark.parametrize(("flag", "mode"), [([], "team"), (["--mode", "self"], "self")])
+def test_compose_mode_defaults_to_team_and_is_saved(
+    config_file: Path,
+    state_dir: Path,
+    flag: list[str],
+    mode: str,
+) -> None:
+    """`compose` reports to the team unless `--mode self`; the draft remembers it."""
+    result = run_cli(*compose_args(config_file, state_dir, "--style", "ytb", *flag))
+
+    assert result.exit_code == 0, result.output
+    (draft_file,) = draft_files(state_dir)
+    assert Draft.model_validate_json(draft_file.read_text(encoding="utf-8")).mode == mode

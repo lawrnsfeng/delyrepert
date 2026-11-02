@@ -39,14 +39,12 @@ def is_interactive() -> bool:
 
 
 def preview_text(draft: Draft, display_name: str | None) -> str:
-    """Return the draft as plain lines: header, counts, then the BLUF groups."""
+    """Return the draft as plain lines: header, counts, then its groups."""
     layout = Layout(draft, display_name, None)
     lines = [layout.header, *([layout.counts] if layout.counts else [])]
-    for part in layout.bluf:
+    for part in layout.sections:
         lines += ["", part.title]
-        for entry in part.entries:
-            ref = f"{entry.label} " if entry.label else ""
-            lines.append(f"  {entry.icon.emoji} {entry.icon.word} · {ref}{entry.text}")
+        lines += [f"  {entry.plain}" for entry in part.entries]
     return "\n".join(lines)
 
 
@@ -109,7 +107,7 @@ class PreviewLoop:
             if len(styles) > 1:
                 typer.echo(f"Style {number}/{len(styles)} — {name}")
             payload = self._renderer.render(draft, name, animated_available=False)
-            typer.echo(payload.builder_url)
+            typer.echo(payload.builder_url(self._settings.render.builder_team))
 
     async def run(self) -> None:
         """Show the preview, then prompt (or, without a terminal, print how to post)."""

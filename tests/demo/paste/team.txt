@@ -1,0 +1,18 @@
+STANDUP · TUE 3 NOV
+⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today
+
+YESTERDAY
+✅ Done · DEMO-101 Export invoices as CSV · https://demo.atlassian.net/browse/DEMO-101
+
+TODAY
+▶️ In progress · DEMO-102 Add retry to the webhook sender · https://demo.atlassian.net/browse/DEMO-102
+▶️ In progress · DEMO-105 Fix timezone bug in reports · https://demo.atlassian.net/browse/DEMO-105
+▶️ In progress · Review the demo deck for Friday · https://example.com/demo-deck
+⚠️ At risk · DEMO-108 Rotate signing keys — due Wed 4 Nov · https://demo.atlassian.net/browse/DEMO-108
+▶️ In progress · DEMO-104 Rate limit the public API · https://demo.atlassian.net/browse/DEMO-104
+📝 Note · Out 15:00–17:00 (demo dentist)
+
+BLOCKERS
+⛔ Blocked · DEMO-103 Migrate billing DB to v2 · https://demo.atlassian.net/browse/DEMO-103
+
+Source: Jira

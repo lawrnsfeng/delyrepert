@@ -256,7 +256,7 @@ def test_ac11_no_terminal_prints_how_to_post(
     assert result.exit_code == 0, result.output
     (path,) = draft_files(state)
     assert f"post with: daily-report post {path.stem} --style ytb --yes" in result.stdout
-    assert "Needs attention" in result.stdout
+    assert "Yesterday" in result.stdout
     assert fake_slack.requests == []
 
 
@@ -293,7 +293,7 @@ def test_ac13_dry_run_preview_loop_changes_nothing(
         "--dry-run",
         "compose",
         *("--config", str(config), "--state-dir", str(state)),
-        *("--report", R1_REPORT),
+        *("--report", R1_REPORT, "--mode", "self"),
     ]
 
     result = run_cli(
@@ -372,3 +372,38 @@ def test_preview_text_of_an_empty_day_has_no_counts() -> None:
 
     assert text.splitlines()[0].startswith("Dana · Standup")
     assert len(text.splitlines()) == 1
+
+
+def test_preview_mode_flag_switches_the_draft_and_saves_it(env: SlackEnv) -> None:
+    """`preview --mode team` shows the team groups and keeps the mode in the draft."""
+    assert saved(env).mode == "self"
+
+    result = run_cli(
+        "preview",
+        RUN_ID,
+        *("--mode", "team", "--config", str(env.config), "--state-dir", str(env.state)),
+        env={"SLACK_USER_TOKEN": TOKEN},
+        stdin="c\n",
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Yesterday" in result.stdout
+    assert saved(env).mode == "team"
+
+
+def test_preview_shows_the_drafts_own_mode_and_the_builder_team(env: SlackEnv) -> None:
+    """Without `--mode` the draft's mode stays; `render.builder_team` shapes the links."""
+    env.config.write_text(
+        env.config.read_text("utf-8") + '\n[render]\nbuilder_team = "T0123456789"\n',
+        encoding="utf-8",
+    )
+
+    result = preview(env, "c\n")
+
+    assert "Needs attention" in result.stdout
+    assert saved(env).mode == "self"
+    assert all(
+        line.startswith("https://app.slack.com/block-kit-builder/T0123456789/builder#")
+        for line in result.stdout.splitlines()
+        if line.startswith("https://")
+    )

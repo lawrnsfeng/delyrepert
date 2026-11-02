@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 from daily_report.collect.models import Report
 from daily_report.compose.exceptions import InvalidDraftError
-from daily_report.compose.models import Draft, SlackPayload, StyleName
+from daily_report.compose.models import Draft, Mode, SlackPayload, StyleName
 from daily_report.compose.render import Renderer
 from daily_report.context.services import ContextLoader
 from daily_report.cook.services import CookService
@@ -90,8 +90,9 @@ class ComposeService:
         context_files: list[Path],
         styles: Sequence[StyleName],
         now: dt.datetime,
+        mode: Mode = "self",
     ) -> Composed:
-        """Compose, render `styles` (no Slack call, so no animated emoji) and save the draft."""
+        """Compose in `mode`, render `styles` (no animated emoji) and save the draft."""
         context = await self._context.load(context_files)
         draft = Draft.build(
             report,
@@ -99,6 +100,7 @@ class ComposeService:
             context,
             created_at=now,
             zone=self._zone,
+            mode=mode,
         )
         if self._cook:
             draft = await self._cook.polish(draft)

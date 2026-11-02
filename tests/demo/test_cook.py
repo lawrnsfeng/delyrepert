@@ -13,7 +13,7 @@ def test_ac4_cook_stub_wording_reaches_the_files(tmp_path: Path) -> None:
     result = env.run("--cook", "--style", "bluf")
 
     assert result.exit_code == 0, result.output
-    text = (env.out / "bluf.json").read_text("utf-8")
+    text = (env.out / "self" / "bluf.json").read_text("utf-8")
     assert "Cooked DEMO-103" in text
     assert "Cooked headline" in text
     assert "Cooked demo-skill#1" in text
@@ -27,7 +27,7 @@ def test_ac4_cook_accepts_structured_output(tmp_path: Path) -> None:
     result = env.run("--cook", "--style", "bluf")
 
     assert result.exit_code == 0, result.output
-    assert "Cooked DEMO-103" in (env.out / "bluf.json").read_text("utf-8")
+    assert "Cooked DEMO-103" in (env.out / "self" / "bluf.json").read_text("utf-8")
 
 
 @pytest.mark.parametrize(
@@ -54,7 +54,7 @@ def test_ac4_rejected_cook_keeps_the_script_wording(tmp_path: Path, mode: str, c
 
     assert result.exit_code == 0, result.output
     assert f"cook rejected: {cause}" in result.stderr
-    assert "Cooked" not in (env.out / "bluf.json").read_text("utf-8")
+    assert "Cooked" not in (env.out / "self" / "bluf.json").read_text("utf-8")
 
 
 def test_ac4_cook_timeout_keeps_the_script_wording(tmp_path: Path) -> None:

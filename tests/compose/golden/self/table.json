@@ -1,11 +1,11 @@
 {
-  "text": "Standup · Tue 3 Nov · DEMO-103 · DEMO-108 · DEMO-101 · DEMO-102 · DEMO-105 · DEMO-104 · DEMO-107 · demo-skill#1 · 📝 Out 15:00–17:00 (demo dentist)",
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · PAY-440 · 📝 Out 15:00–17:00 (dentist)",
   "blocks": [
     {
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": "Standup · Tue 3 Nov",
+        "text": "Standup · Mon 2 Nov",
         "emoji": true
       }
     },
@@ -14,17 +14,24 @@
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 1 done · ▶️ 3 today"
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 2 done · ▶️ 1 today"
         }
       ]
     },
     {
       "type": "table",
       "column_settings": [
-        null,
-        null,
-        null,
         {
+          "align": "left"
+        },
+        {
+          "align": "left"
+        },
+        {
+          "align": "left"
+        },
+        {
+          "align": "left",
           "is_wrapped": true
         }
       ],
@@ -78,16 +85,38 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-103",
-                    "text": "DEMO-103"
+                    "url": "https://example.atlassian.net/browse/PAY-412",
+                    "text": "PAY-412"
                   }
                 ]
               }
             ]
           },
           {
-            "type": "raw_text",
-            "text": "Migrate billing DB to v2 — In Progress → Blocked"
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-412",
+                    "text": "Ledger export to the bank"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — In Progress → Blocked"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority Medium",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ],
         [
@@ -121,16 +150,38 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-108",
-                    "text": "DEMO-108"
+                    "url": "https://example.atlassian.net/browse/PAY-398",
+                    "text": "PAY-398"
                   }
                 ]
               }
             ]
           },
           {
-            "type": "raw_text",
-            "text": "Rotate signing keys — Due 2026-11-04"
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-398",
+                    "text": "Refund webhook retries"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Due 2026-11-03"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority Medium",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ],
         [
@@ -164,22 +215,44 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-104",
-                    "text": "DEMO-104"
+                    "url": "https://example.atlassian.net/browse/PAY-430",
+                    "text": "PAY-430"
                   }
                 ]
               }
             ]
           },
           {
-            "type": "raw_text",
-            "text": "Rate limit the public API — 1 new from Alice Chen"
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-430",
+                    "text": "Currency rounding rules"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — 2 new from Dana"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority Medium · Dana, Alice: “Should we round half-even?”",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ],
         [
           {
             "type": "raw_text",
-            "text": "Since Mon 2 Nov"
+            "text": "Since Fri 30 Oct"
           },
           {
             "type": "rich_text",
@@ -207,22 +280,174 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-101",
-                    "text": "DEMO-101"
+                    "url": "https://example.atlassian.net/browse/PAY-405",
+                    "text": "PAY-405"
                   }
                 ]
               }
             ]
           },
           {
-            "type": "raw_text",
-            "text": "Export invoices as CSV — In Progress → Done"
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-405",
+                    "text": "Settlement report totals"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — In Progress → Done"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority High",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ],
         [
           {
             "type": "raw_text",
-            "text": "Since Mon 2 Nov"
+            "text": "Since Fri 30 Oct"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "✅"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Done"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-377",
+                    "text": "PAY-377"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-377",
+                    "text": "Card BIN lookup cache"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — In Progress → Done"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority Medium",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Since Fri 30 Oct"
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "💬"
+                  },
+                  {
+                    "type": "text",
+                    "text": " Replied"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-431",
+                    "text": "PAY-431"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "link",
+                    "url": "https://example.atlassian.net/browse/PAY-431",
+                    "text": "Chargeback evidence upload"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — 1 new comment"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\nPriority Medium",
+                    "style": {
+                      "italic": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "raw_text",
+            "text": "Since Fri 30 Oct"
           },
           {
             "type": "rich_text",
@@ -243,6 +468,10 @@
             ]
           },
           {
+            "type": "raw_text",
+            "text": "—"
+          },
+          {
             "type": "rich_text",
             "elements": [
               {
@@ -250,16 +479,16 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-107",
-                    "text": "DEMO-107"
+                    "url": "https://example.atlassian.net/browse/PAY-440",
+                    "text": "PAY-440"
+                  },
+                  {
+                    "type": "text",
+                    "text": " — No longer assigned to you"
                   }
                 ]
               }
             ]
-          },
-          {
-            "type": "raw_text",
-            "text": "DEMO-107 — No longer assigned to you"
           }
         ],
         [
@@ -293,36 +522,8 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-102",
-                    "text": "DEMO-102"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "raw_text",
-            "text": "Add retry to the webhook sender — In Progress → In Review · 1 new comment"
-          }
-        ],
-        [
-          {
-            "type": "raw_text",
-            "text": "Today"
-          },
-          {
-            "type": "rich_text",
-            "elements": [
-              {
-                "type": "rich_text_section",
-                "elements": [
-                  {
-                    "type": "text",
-                    "text": "▶️"
-                  },
-                  {
-                    "type": "text",
-                    "text": " In progress"
+                    "url": "https://example.atlassian.net/browse/PAY-420",
+                    "text": "PAY-420"
                   }
                 ]
               }
@@ -336,59 +537,23 @@
                 "elements": [
                   {
                     "type": "link",
-                    "url": "https://demo.atlassian.net/browse/DEMO-105",
-                    "text": "DEMO-105"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "raw_text",
-            "text": "Fix timezone bug in reports — Newly assigned · To Do"
-          }
-        ],
-        [
-          {
-            "type": "raw_text",
-            "text": "Today"
-          },
-          {
-            "type": "rich_text",
-            "elements": [
-              {
-                "type": "rich_text_section",
-                "elements": [
-                  {
-                    "type": "text",
-                    "text": "▶️"
+                    "url": "https://example.atlassian.net/browse/PAY-420",
+                    "text": "Payout scheduler"
                   },
                   {
                     "type": "text",
-                    "text": " In progress"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "rich_text",
-            "elements": [
-              {
-                "type": "rich_text_section",
-                "elements": [
+                    "text": " — To Do → In Progress"
+                  },
                   {
-                    "type": "link",
-                    "url": "https://example.com/demo-deck",
-                    "text": "demo-skill#1"
+                    "type": "text",
+                    "text": "\nPriority Medium",
+                    "style": {
+                      "italic": true
+                    }
                   }
                 ]
               }
             ]
-          },
-          {
-            "type": "raw_text",
-            "text": "Review the demo deck for Friday — demo-skill"
           }
         ],
         [
@@ -419,8 +584,18 @@
             "text": "—"
           },
           {
-            "type": "raw_text",
-            "text": "Out 15:00–17:00 (demo dentist)"
+            "type": "rich_text",
+            "elements": [
+              {
+                "type": "rich_text_section",
+                "elements": [
+                  {
+                    "type": "text",
+                    "text": "Out 15:00–17:00 (dentist)"
+                  }
+                ]
+              }
+            ]
           }
         ]
       ]
@@ -430,7 +605,7 @@
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Sources: Jira · demo-skill"
+          "text": "Sources: Jira"
         }
       ]
     }

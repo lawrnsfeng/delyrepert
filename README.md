@@ -40,6 +40,7 @@ Config keys:
 | `jira.flagged_value` | Default `"Impediment"`. |
 | `display_name` | Optional name shown before the standup headline. |
 | `render.style` | Optional default style (`bluf`, `ytb`, `table`, `markdown`, `compact`, `cards`, `richlist`). Unset: every preview shows all seven. |
+| `render.builder_team` | Optional Slack team ID (`T…`). Block Kit Builder links then use `https://app.slack.com/block-kit-builder/<team>/builder#…`; unset keeps the team-less form, which some workspaces redirect to sign-in and lose the payload. |
 | `emoji.blocked_animated` | Optional animated custom emoji name (no colons) for blocker lines, used only when Slack lists it. |
 | `slack.channel` | Channel ID `post` writes to (`C…`). |
 | `slack.parent_match` | `user_id` and/or `text_contains` that spot today's standup parent message. |
@@ -73,7 +74,7 @@ daily-report collect [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--ou
 
 ```bash
 daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--report PATH|-]
-                     [--context PATH]... [--style NAME] [--out DIR] [--cook] [--dry-run]
+                     [--context PATH]... [--style NAME] [--mode team|self] [--out DIR] [--cook] [--dry-run]
 ```
 
 - Takes the report from `--report` (a file, or `-` for stdin), or collects it
@@ -84,7 +85,17 @@ daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--re
   style (labelled `Style n/7 — name` while all seven show). With
   `--out DIR` it also writes `<style>.json` (the `chat.postMessage` body) per
   style.
-- Renders `--style`, else `render.style`, else all seven styles:
+- `--mode` picks the report (default `team`) and is saved in the draft (`mode`, default
+  `self` for older drafts):
+  - `team`: concise, for your team. One line per ticket: status icon and word, the key and the
+    title, both linked to the Jira issue. Grouped Yesterday / Today / Blockers. No status arrows,
+    comment authors or counts, priorities or hand-off bookkeeping; a due date shows only on
+    at-risk items; notes you wrote show; the footer is just `Source: Jira`. A polished (`--cook`)
+    summary shows after the title.
+  - `self`: every detail for you: the status transition, priority, due date, who commented
+    (with an excerpt), newly assigned / handed off, the since-baseline wording, notes, context
+    items and the full sources footer.
+- Renders `--style`, else `render.style`, else all seven styles (in the given mode):
   `bluf` (Needs attention / Since / Today), `ytb` (Yesterday / Today /
   Blockers), `table`, `markdown`, `compact`, `cards` and `richlist`.
 - Every line starts with an icon and a word: ⛔ Blocked, ⚠️ At risk,
@@ -103,11 +114,12 @@ daily-report compose [--config PATH] [--state-dir PATH] [--as-of ISO-8601] [--re
 ## `preview`, `draft edit` and `--cook`
 
 ```bash
-daily-report preview RUN_ID [--gallery] [--config PATH] [--state-dir PATH]
+daily-report preview RUN_ID [--gallery] [--mode team|self] [--config PATH] [--state-dir PATH]
 daily-report draft edit RUN_ID --from FILE [--config PATH] [--state-dir PATH]
 ```
 
-- `preview` shows a saved draft and runs the same prompt loop as `compose`.
+- `preview` shows a saved draft in its own mode (`--mode` switches the draft and saves it) and
+  runs the same prompt loop as `compose`.
   While `render.style` is unset it shows all seven styles; `--gallery` shows
   them again later. Keys: `p` posts (asks for a style number if none is set,
   then offers to save it as `render.style`, the only key daily-report ever
@@ -177,20 +189,21 @@ line, text up to 120 characters) and show as 📝 Note in the next standup.
 ## `demo`
 
 ```bash
-daily-report demo --out ./demo
+daily-report demo --out ./demo [--mode team|self]
 ```
 
 Runs the whole flow from built-in mock Jira fixtures (no Jira, no config, no
 state dir needed): an in-process fake Jira, a seeded yesterday snapshot, one
 note and one other-skill context item, with the clock frozen at
-`--as-of 2026-11-03T09:00:00+00:00`. It writes one Block Kit payload per style
-(`bluf`, `ytb`, `table`, `markdown`, `compact`, `cards`, `richlist`) to `--out`
-and prints a Block Kit Builder link for each. State goes to a fresh temp dir
+`--as-of 2026-11-03T09:00:00+00:00`. It renders both reports and writes one Block Kit payload per style
+(`bluf`, `ytb`, `table`, `markdown`, `compact`, `cards`, `richlist`) to
+`--out/team/<style>.json` and `--out/self/<style>.json` (14 files; `--mode` renders one
+mode). Each Builder link goes to stdout, its label (`team bluf`, `self cards`, …) to stderr. State goes to a fresh temp dir
 (printed as `state dir: …`) unless `--state-dir`, `DAILY_REPORT_DEMO_STATE_DIR`
 or `demo.state_dir` names one. Under `--dry-run` nothing is written but `--out`:
 the seeded snapshot is read in place and the snapshot write is only reported.
 
-Flags: `--style NAME` (one style), `--fixtures-dir` (or
+Flags: `--style NAME` (one style), `--mode team|self`, `--fixtures-dir` (or
 `DAILY_REPORT_DEMO_FIXTURES`; layout `jira/`, `state/snapshots/`,
 `notes/pending.jsonl`, `context/*.json`), `--config`, `--cook` (polish the
 wording with `cook.command`; a rejected answer keeps the script text) and
@@ -199,10 +212,10 @@ wording with `cook.command`; a rejected answer keeps the script text) and
 With `DAILY_REPORT_DEMO_SLACK_USER_TOKEN` set, the demo also posts into your
 test workspace. It first calls `auth.test` and refuses (exit 5) unless the
 token's team is `demo.slack_team_id`. After you answer `y` to
-`Post 7 replies to #<channel>?` it posts the parent
+`Post 14 replies to #<channel>?` it posts the parent
 `🗓️ Daily standup — 2026-11-03 (demo)` to `demo.channel`, finds it again with
 the real parent finder (text match on `demo.parent_text`, default `(demo)`) and
-adds one reply per style headed `Style n/7 — <name>`. `--broadcast` also shows
+adds one reply per mode and style headed `Style n/14 — <mode> <name>`. `--broadcast` also shows
 every reply in the channel. `slack.api_url` from the config is used when set.
 
 ```toml
@@ -294,3 +307,12 @@ Anyone but `owner_slack_user_id` gets `not authorized`. Create the app from
 make check   # ruff, mypy, ty, pytest with 100% branch coverage
 make pre     # pre-commit hooks
 ```
+
+## Paste-ready output (when Slack posting is not allowed)
+
+`daily_report.compose.paste.render_paste(draft, "text" | "html", display_name=None)` renders a
+draft, in its own mode, for pasting into Slack by hand. `text` has one line per ticket ending in
+the raw Jira URL (Slack links bare URLs when pasted; `<url|label>` and `[label](url)` do not) and
+no Slack markup. `html` is one self-contained UTF-8 page (inline CSS, no script, no external
+assets) with real links: open it, select all, copy, and paste into Slack to keep bold and links.
+The CLI commands that print them are added with `standup` and `self`.

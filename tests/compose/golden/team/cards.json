@@ -1,5 +1,5 @@
 {
-  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · PAY-440 · 📝 Out 15:00–17:00 (dentist)",
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · 📝 Out 15:00–17:00 (dentist)",
   "blocks": [
     {
       "type": "header",
@@ -22,24 +22,14 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*Needs attention*"
+        "text": "*Yesterday*"
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "⛔ Blocked · <https://example.atlassian.net/browse/PAY-412|PAY-412> Ledger export to the bank — In Progress → Blocked"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "⚠️ At risk · <https://example.atlassian.net/browse/PAY-398|PAY-398> Refund webhook retries — Due 2026-11-03"
+        "text": "✅ Done · <https://example.atlassian.net/browse/PAY-405|PAY-405> <https://example.atlassian.net/browse/PAY-405|Settlement report totals>"
       }
     },
     {
@@ -49,7 +39,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "💬 New comments · <https://example.atlassian.net/browse/PAY-430|PAY-430> Currency rounding rules — 2 new from Dana"
+        "text": "✅ Done · <https://example.atlassian.net/browse/PAY-377|PAY-377> <https://example.atlassian.net/browse/PAY-377|Card BIN lookup cache>"
       }
     },
     {
@@ -59,44 +49,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*Since Fri 30 Oct*"
-      }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "✅ Done · <https://example.atlassian.net/browse/PAY-405|PAY-405> Settlement report totals — In Progress → Done"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "✅ Done · <https://example.atlassian.net/browse/PAY-377|PAY-377> Card BIN lookup cache — In Progress → Done"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "💬 Replied · <https://example.atlassian.net/browse/PAY-431|PAY-431> Chargeback evidence upload — 1 new comment"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "↪️ Handed off · <https://example.atlassian.net/browse/PAY-440|PAY-440> PAY-440 — No longer assigned to you"
+        "text": "▶️ In progress · <https://example.atlassian.net/browse/PAY-431|PAY-431> <https://example.atlassian.net/browse/PAY-431|Chargeback evidence upload>"
       }
     },
     {
@@ -113,7 +66,27 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "▶️ In progress · <https://example.atlassian.net/browse/PAY-420|PAY-420> Payout scheduler — To Do → In Progress"
+        "text": "▶️ In progress · <https://example.atlassian.net/browse/PAY-420|PAY-420> <https://example.atlassian.net/browse/PAY-420|Payout scheduler>"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "⚠️ At risk · <https://example.atlassian.net/browse/PAY-398|PAY-398> <https://example.atlassian.net/browse/PAY-398|Refund webhook retries> — due Tue 3 Nov"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "▶️ In progress · <https://example.atlassian.net/browse/PAY-430|PAY-430> <https://example.atlassian.net/browse/PAY-430|Currency rounding rules>"
       }
     },
     {
@@ -130,11 +103,28 @@
       "type": "divider"
     },
     {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Blockers*"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "⛔ Blocked · <https://example.atlassian.net/browse/PAY-412|PAY-412> <https://example.atlassian.net/browse/PAY-412|Ledger export to the bank>"
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
       "type": "context",
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Sources: Jira"
+          "text": "Source: Jira"
         }
       ]
     }

@@ -29,7 +29,7 @@ def compose_cooked(
     result = run_cli(
         "compose",
         *("--config", str(config_file), "--state-dir", str(state)),
-        *("--report", R1_REPORT, "--cook", "--style", "bluf"),
+        *("--report", R1_REPORT, "--cook", "--style", "bluf", "--mode", "self"),
         env=env,
     )
     assert result.exit_code == 0, result.output

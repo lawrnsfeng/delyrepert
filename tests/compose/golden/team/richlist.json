@@ -1,5 +1,5 @@
 {
-  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · PAY-440 · 📝 Out 15:00–17:00 (dentist)",
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · 📝 Out 15:00–17:00 (dentist)",
   "blocks": [
     {
       "type": "header",
@@ -26,103 +26,7 @@
           "elements": [
             {
               "type": "text",
-              "text": "Needs attention",
-              "style": {
-                "bold": true
-              }
-            }
-          ]
-        },
-        {
-          "type": "rich_text_list",
-          "style": "bullet",
-          "elements": [
-            {
-              "type": "rich_text_section",
-              "elements": [
-                {
-                  "type": "text",
-                  "text": "⛔"
-                },
-                {
-                  "type": "text",
-                  "text": " Blocked"
-                },
-                {
-                  "type": "text",
-                  "text": " · "
-                },
-                {
-                  "type": "link",
-                  "url": "https://example.atlassian.net/browse/PAY-412",
-                  "text": "PAY-412"
-                },
-                {
-                  "type": "text",
-                  "text": " Ledger export to the bank — In Progress → Blocked"
-                }
-              ]
-            },
-            {
-              "type": "rich_text_section",
-              "elements": [
-                {
-                  "type": "text",
-                  "text": "⚠️"
-                },
-                {
-                  "type": "text",
-                  "text": " At risk"
-                },
-                {
-                  "type": "text",
-                  "text": " · "
-                },
-                {
-                  "type": "link",
-                  "url": "https://example.atlassian.net/browse/PAY-398",
-                  "text": "PAY-398"
-                },
-                {
-                  "type": "text",
-                  "text": " Refund webhook retries — Due 2026-11-03"
-                }
-              ]
-            },
-            {
-              "type": "rich_text_section",
-              "elements": [
-                {
-                  "type": "text",
-                  "text": "💬"
-                },
-                {
-                  "type": "text",
-                  "text": " New comments"
-                },
-                {
-                  "type": "text",
-                  "text": " · "
-                },
-                {
-                  "type": "link",
-                  "url": "https://example.atlassian.net/browse/PAY-430",
-                  "text": "PAY-430"
-                },
-                {
-                  "type": "text",
-                  "text": " Currency rounding rules — 2 new from Dana"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "rich_text_section",
-          "elements": [
-            {
-              "type": "text",
-              "text": "Since Fri 30 Oct",
+              "text": "Yesterday",
               "style": {
                 "bold": true
               }
@@ -155,7 +59,12 @@
                 },
                 {
                   "type": "text",
-                  "text": " Settlement report totals — In Progress → Done"
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-405",
+                  "text": "Settlement report totals"
                 }
               ]
             },
@@ -181,7 +90,12 @@
                 },
                 {
                   "type": "text",
-                  "text": " Card BIN lookup cache — In Progress → Done"
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-377",
+                  "text": "Card BIN lookup cache"
                 }
               ]
             },
@@ -190,11 +104,11 @@
               "elements": [
                 {
                   "type": "text",
-                  "text": "💬"
+                  "text": "▶️"
                 },
                 {
                   "type": "text",
-                  "text": " Replied"
+                  "text": " In progress"
                 },
                 {
                   "type": "text",
@@ -207,33 +121,12 @@
                 },
                 {
                   "type": "text",
-                  "text": " Chargeback evidence upload — 1 new comment"
-                }
-              ]
-            },
-            {
-              "type": "rich_text_section",
-              "elements": [
-                {
-                  "type": "text",
-                  "text": "↪️"
-                },
-                {
-                  "type": "text",
-                  "text": " Handed off"
-                },
-                {
-                  "type": "text",
-                  "text": " · "
+                  "text": " "
                 },
                 {
                   "type": "link",
-                  "url": "https://example.atlassian.net/browse/PAY-440",
-                  "text": "PAY-440"
-                },
-                {
-                  "type": "text",
-                  "text": " PAY-440 — No longer assigned to you"
+                  "url": "https://example.atlassian.net/browse/PAY-431",
+                  "text": "Chargeback evidence upload"
                 }
               ]
             }
@@ -277,7 +170,78 @@
                 },
                 {
                   "type": "text",
-                  "text": " Payout scheduler — To Do → In Progress"
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-420",
+                  "text": "Payout scheduler"
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "⚠️"
+                },
+                {
+                  "type": "text",
+                  "text": " At risk"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-398",
+                  "text": "PAY-398"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-398",
+                  "text": "Refund webhook retries"
+                },
+                {
+                  "type": "text",
+                  "text": " — due Tue 3 Nov"
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "▶️"
+                },
+                {
+                  "type": "text",
+                  "text": " In progress"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-430",
+                  "text": "PAY-430"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-430",
+                  "text": "Currency rounding rules"
                 }
               ]
             },
@@ -303,6 +267,55 @@
               ]
             }
           ]
+        },
+        {
+          "type": "rich_text_section",
+          "elements": [
+            {
+              "type": "text",
+              "text": "Blockers",
+              "style": {
+                "bold": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "rich_text_list",
+          "style": "bullet",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "⛔"
+                },
+                {
+                  "type": "text",
+                  "text": " Blocked"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-412",
+                  "text": "PAY-412"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-412",
+                  "text": "Ledger export to the bank"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -311,7 +324,7 @@
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "Sources: Jira"
+          "text": "Source: Jira"
         }
       ]
     }

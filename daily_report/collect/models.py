@@ -71,6 +71,7 @@ class Item(BaseModel):
     scope_change: ScopeChange
     bucket: Bucket
     jira_priority: str | None
+    due: dt.date | None = None
     summary: str = Field(max_length=SUMMARY_MAX)
     events: list[Event]
 

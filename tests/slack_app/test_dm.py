@@ -160,7 +160,7 @@ def test_ac3_a_long_single_style_is_shortened_to_fit_slack() -> None:
     """Past 44 blocks the DM cuts the draft, says so, and keeps the three buttons."""
     base = r1_draft()
     items = [base.items[0].model_copy(update={"id": f"PAY-{n}"}) for n in range(1, 20)]
-    draft = base.model_copy(update={"items": items})
+    draft = base.model_copy(update={"items": items, "mode": "team"})
 
     body = preview_body(
         draft,

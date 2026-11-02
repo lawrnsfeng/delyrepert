@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.demo.helpers import GOLDEN, LINK, STYLE_FILES, out_names
+from tests.demo.helpers import LINK, assert_goldens
 
 PROJECT = Path(__file__).parents[2]
 
@@ -42,11 +42,9 @@ async def test_ac3_demo_subprocess_smoke(tmp_path: Path) -> None:
     code, stdout, stderr = await run_demo(cwd, home, "demo", "--out", str(out))
 
     assert code == 0, stderr
-    assert out_names(out) == STYLE_FILES
-    for name in STYLE_FILES:
-        assert (out / name).read_bytes() == (GOLDEN / name).read_bytes()
+    assert_goldens(out)
     lines = stdout.splitlines()
-    assert len([line for line in lines if line.startswith(LINK)]) == 7
+    assert len([line for line in lines if line.startswith(LINK)]) == 14
     state = Path(next(line for line in lines if line.startswith("state dir: ")).split(": ")[1])
     assert (state / "snapshots/2026-11-03.json").is_file()
     shutil.rmtree(state)
@@ -66,8 +64,6 @@ async def test_ac8_demo_dry_run_subprocess_smoke(tmp_path: Path) -> None:
     assert code == 0, stderr
     assert "[dry-run] would write snapshots/2026-11-03.json" in stderr
     assert "state dir:" not in stdout
-    assert out_names(out) == STYLE_FILES
-    for name in STYLE_FILES:
-        assert (out / name).read_bytes() == (GOLDEN / name).read_bytes()
+    assert_goldens(out)
     assert list(cwd.iterdir()) == []
     assert {path.name for path in home.iterdir()} <= {".cache"}  # uv's own cache

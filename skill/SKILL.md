@@ -19,8 +19,8 @@ flow and posts nothing.
    context JSON file, and keep the path for `--context`.
 3. **Notes.** Run `daily-report note list` and show the pending notes. Offer to add one with
    `daily-report note "<text>" --group attention|today|done`.
-4. **Compose.** Run `daily-report compose --report <report.json> [--context <file>]... --style bluf`
-   with no terminal attached. Read the `draft <run-id>` line and the preview it prints. Ask whether
+4. **Compose.** Run `daily-report compose --report <report.json> [--context <file>]... --style bluf --mode team`
+   (`--mode self` for the owner's own detailed report) with no terminal attached. Read the `draft <run-id>` line and the preview it prints. Ask whether
    to cook: if yes, rerun compose with `--cook` (needs `cook.command` in the config). If the
    preview shows `cook rejected: <cause>`, tell the owner the script wording was kept.
 5. **Preview and edit.** Show the preview. If the owner wants changes, write the edit YAML

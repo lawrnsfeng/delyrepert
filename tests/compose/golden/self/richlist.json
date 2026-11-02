@@ -1,0 +1,433 @@
+{
+  "text": "Standup · Mon 2 Nov · PAY-412 · PAY-398 · PAY-405 · PAY-377 · PAY-420 · PAY-430 · PAY-431 · PAY-440 · 📝 Out 15:00–17:00 (dentist)",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Standup · Mon 2 Nov",
+        "emoji": true
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "⛔ 1 blocked · ⚠️ 1 at risk · ✅ 2 done · ▶️ 1 today"
+        }
+      ]
+    },
+    {
+      "type": "rich_text",
+      "elements": [
+        {
+          "type": "rich_text_section",
+          "elements": [
+            {
+              "type": "text",
+              "text": "Needs attention",
+              "style": {
+                "bold": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "rich_text_list",
+          "style": "bullet",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "⛔"
+                },
+                {
+                  "type": "text",
+                  "text": " Blocked"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-412",
+                  "text": "PAY-412"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-412",
+                  "text": "Ledger export to the bank"
+                },
+                {
+                  "type": "text",
+                  "text": " — In Progress → Blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "⚠️"
+                },
+                {
+                  "type": "text",
+                  "text": " At risk"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-398",
+                  "text": "PAY-398"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-398",
+                  "text": "Refund webhook retries"
+                },
+                {
+                  "type": "text",
+                  "text": " — Due 2026-11-03"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "💬"
+                },
+                {
+                  "type": "text",
+                  "text": " New comments"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-430",
+                  "text": "PAY-430"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-430",
+                  "text": "Currency rounding rules"
+                },
+                {
+                  "type": "text",
+                  "text": " — 2 new from Dana"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium · Dana, Alice: “Should we round half-even?”",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rich_text_section",
+          "elements": [
+            {
+              "type": "text",
+              "text": "Since Fri 30 Oct",
+              "style": {
+                "bold": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "rich_text_list",
+          "style": "bullet",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "✅"
+                },
+                {
+                  "type": "text",
+                  "text": " Done"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-405",
+                  "text": "PAY-405"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-405",
+                  "text": "Settlement report totals"
+                },
+                {
+                  "type": "text",
+                  "text": " — In Progress → Done"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority High",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "✅"
+                },
+                {
+                  "type": "text",
+                  "text": " Done"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-377",
+                  "text": "PAY-377"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-377",
+                  "text": "Card BIN lookup cache"
+                },
+                {
+                  "type": "text",
+                  "text": " — In Progress → Done"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "💬"
+                },
+                {
+                  "type": "text",
+                  "text": " Replied"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-431",
+                  "text": "PAY-431"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-431",
+                  "text": "Chargeback evidence upload"
+                },
+                {
+                  "type": "text",
+                  "text": " — 1 new comment"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "↪️"
+                },
+                {
+                  "type": "text",
+                  "text": " Handed off"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-440",
+                  "text": "PAY-440"
+                },
+                {
+                  "type": "text",
+                  "text": " — No longer assigned to you"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rich_text_section",
+          "elements": [
+            {
+              "type": "text",
+              "text": "Today",
+              "style": {
+                "bold": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "rich_text_list",
+          "style": "bullet",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "▶️"
+                },
+                {
+                  "type": "text",
+                  "text": " In progress"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-420",
+                  "text": "PAY-420"
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "link",
+                  "url": "https://example.atlassian.net/browse/PAY-420",
+                  "text": "Payout scheduler"
+                },
+                {
+                  "type": "text",
+                  "text": " — To Do → In Progress"
+                },
+                {
+                  "type": "text",
+                  "text": "\nPriority Medium",
+                  "style": {
+                    "italic": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "📝"
+                },
+                {
+                  "type": "text",
+                  "text": " Note"
+                },
+                {
+                  "type": "text",
+                  "text": " · "
+                },
+                {
+                  "type": "text",
+                  "text": "Out 15:00–17:00 (dentist)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Sources: Jira"
+        }
+      ]
+    }
+  ],
+  "unfurl_links": false,
+  "unfurl_media": false
+}

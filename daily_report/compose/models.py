@@ -11,6 +11,7 @@ from daily_report.notes.models import Note
 
 # Plain aliases where typer reads the type: it cannot unwrap a `type` statement.
 StyleName = Literal["bluf", "ytb", "table", "markdown", "compact", "cards", "richlist"]
+Mode = Literal["team", "self"]
 Target = Literal["thread", "thread_broadcast", "channel"]
 type Kind = Literal[
     "blocked",
@@ -34,7 +35,7 @@ STYLE_NAMES: tuple[StyleName, ...] = (
     "cards",
     "richlist",
 )
-BUILDER_URL = "https://app.slack.com/block-kit-builder/#"
+BUILDER_URL = "https://app.slack.com/block-kit-builder/"
 MAX_BLOCKS = 50
 SECTION_TEXT_MAX = 3000
 MARKDOWN_TEXT_MAX = 12000
@@ -77,16 +78,19 @@ class DraftItem(BaseModel):
     summary: str = Field(max_length=SUMMARY_MAX)
     comment_count: int = 0
     first_author: str | None = None
+    priority: str | None = None
+    due: dt.date | None = None
+    commenters: list[str] = []
+    excerpt: str | None = None  # the first comment from someone else
     hidden: bool = False
 
     @classmethod
     def from_report(cls, item: Item) -> Self:
         """Map a collector item to its kind and group (collector D10)."""
-        others = [
-            event.author.display_name
-            for event in item.events
-            if event.type == "comment" and not event.author.is_me
+        comments = [
+            event for event in item.events if event.type == "comment" and not event.author.is_me
         ]
+        others = [event.author.display_name for event in comments]
         place: tuple[Kind, Group] = (
             ("comments", "attention")
             if item.bucket == "comment" and others
@@ -102,6 +106,10 @@ class DraftItem(BaseModel):
             summary=f"{len(others)} new from {others[0]}" if kind == "comments" else item.summary,
             comment_count=len(others),
             first_author=others[0] if others else None,
+            priority=item.jira_priority,
+            due=item.due,
+            commenters=list(dict.fromkeys(others)),
+            excerpt=comments[0].excerpt if comments else None,
         )
 
     @classmethod
@@ -153,11 +161,12 @@ class Draft(BaseModel):
     cooked: bool = False
     cook_error: str | None = None
     style: StyleName | None = None
+    mode: Mode = "self"
     target: Target = "thread"
     posted: Posted | None = None
 
     @classmethod
-    def build(
+    def build(  # noqa: PLR0913 - the draft's inputs and the mode
         cls,
         report: Report,
         notes: list[Note],
@@ -165,6 +174,7 @@ class Draft(BaseModel):
         *,
         created_at: dt.datetime,
         zone: dt.tzinfo,
+        mode: Mode = "self",
     ) -> Self:
         """Compose the draft from the report, the pending notes and the context."""
         return cls(
@@ -181,6 +191,7 @@ class Draft(BaseModel):
             sources=["Jira", *context.sources],
             warnings=report.warnings,
             dropped=context.dropped,
+            mode=mode,
         )
 
     @property
@@ -203,11 +214,11 @@ class SlackPayload(BaseModel):
         """Return the payload file content (`--out`, goldens)."""
         return self.model_dump_json(indent=2) + "\n"
 
-    @property
-    def builder_url(self) -> str:
-        """Return a Block Kit Builder link previewing the blocks."""
+    def builder_url(self, team: str | None = None) -> str:
+        """Return a Block Kit Builder link previewing the blocks (`team`: the workspace ID)."""
         blocks = json.dumps({"blocks": self.blocks}, ensure_ascii=False, separators=(",", ":"))
-        return BUILDER_URL + quote(blocks, safe="")
+        base = f"{BUILDER_URL}{team}/builder#" if team else f"{BUILDER_URL}#"
+        return base + quote(blocks, safe="")
 
     @property
     def overflow(self) -> str | None:

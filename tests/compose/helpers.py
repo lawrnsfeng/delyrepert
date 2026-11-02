@@ -10,7 +10,7 @@ from typer.testing import CliRunner, Result
 
 from daily_report.cli import app
 from daily_report.collect.models import Baseline, Bucket, Item, Report, Status, Window
-from daily_report.compose.models import Draft, SlackPayload, StyleName
+from daily_report.compose.models import Draft, Mode, SlackPayload, StyleName
 from daily_report.compose.render import Renderer
 from daily_report.context.models import ContextResult
 from daily_report.jira.fake import JiraFixtures, Json
@@ -88,14 +88,20 @@ def draft_of(source: Report, notes: list[Note] | None = None) -> Draft:
     return Draft.build(source, notes or [], ContextResult(), created_at=CREATED_AT, zone=dt.UTC)
 
 
-def r1_draft(*, notes: list[Note] | None = None, context: ContextResult | None = None) -> Draft:
-    """Return R1's draft: the report plus its one pending note."""
+def r1_draft(
+    *,
+    notes: list[Note] | None = None,
+    context: ContextResult | None = None,
+    mode: Mode = "self",
+) -> Draft:
+    """Return R1's draft in `mode`: the report plus its one pending note."""
     return Draft.build(
         r1_report(),
         [note()] if notes is None else notes,
         context or ContextResult(),
         created_at=CREATED_AT,
         zone=dt.UTC,
+        mode=mode,
     )
 
 

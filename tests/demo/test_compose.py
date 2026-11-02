@@ -12,24 +12,19 @@ from tests.demo.helpers import (
     FIXTURES,
     GOLDEN,
     LINK,
+    MODES,
     STYLE_FILES,
     DemoEnv,
+    assert_goldens,
     out_names,
 )
-
-
-def assert_goldens(out: Path) -> None:
-    """Every style file equals its golden byte for byte."""
-    assert out_names(out) == STYLE_FILES
-    for name in STYLE_FILES:
-        assert (out / name).read_bytes() == (GOLDEN / name).read_bytes()
 
 
 def test_ac3_demo_without_token_writes_the_golden_styles(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """No token: seven style files equal the goldens, seven links, a fresh state dir."""
+    """No token: team and self style files equal the goldens, 14 links, a fresh state dir."""
     scratch = tmp_path / "tmp"
     scratch.mkdir()
     monkeypatch.setattr(tempfile, "tempdir", str(scratch))
@@ -39,28 +34,48 @@ def test_ac3_demo_without_token_writes_the_golden_styles(
 
     assert result.exit_code == 0, result.output
     assert_goldens(env.out)
-    assert len([line for line in result.stdout.splitlines() if line.startswith(LINK)]) == 7
+    assert len([line for line in result.stdout.splitlines() if line.startswith(LINK)]) == 14
     (state,) = scratch.iterdir()
     assert f"state dir: {state}" in result.stdout.splitlines()
     assert (state / "snapshots/2026-11-03.json").is_file()
     assert len(list((state / "drafts").iterdir())) == 1
-    for name in STYLE_FILES:
-        text = (env.out / name).read_text(encoding="utf-8")
-        assert "📝" in text
-        assert "demo-skill" in text
-        assert "DEMO-103" in text
-        assert "⛔" in text
+    for mode in MODES:
+        for name in STYLE_FILES:
+            text = (env.out / mode / name).read_text(encoding="utf-8")
+            assert "📝" in text
+            assert "DEMO-103" in text
+            assert "⛔" in text
+            assert "demo-skill" in text
+    labels = [line for line in result.stderr.splitlines() if line.startswith(("team ", "self "))]
+    assert labels[0] == "team bluf"
+    assert "self cards" in labels
+    assert len(labels) == 14
 
 
 def test_ac3_style_writes_only_that_file(tmp_path: Path) -> None:
-    """`--style ytb` writes ytb.json alone."""
+    """`--style ytb` writes ytb.json alone in each mode."""
     env = DemoEnv(tmp_path)
 
     result = env.run("--style", "ytb", config=False)
 
     assert result.exit_code == 0, result.output
-    assert out_names(env.out) == ["ytb.json"]
-    assert (env.out / "ytb.json").read_bytes() == (GOLDEN / "ytb.json").read_bytes()
+    assert out_names(env.out) == MODES
+    for mode in MODES:
+        assert out_names(env.out / mode) == ["ytb.json"]
+        assert (env.out / mode / "ytb.json").read_bytes() == (
+            GOLDEN / mode / "ytb.json"
+        ).read_bytes()
+
+
+def test_ac3_mode_renders_one_mode_only(tmp_path: Path) -> None:
+    """`--mode team` writes the team directory alone, seven files, seven links."""
+    env = DemoEnv(tmp_path)
+
+    result = env.run("--mode", "team", config=False)
+
+    assert result.exit_code == 0, result.output
+    assert_goldens(env.out, ["team"])
+    assert len([line for line in result.stdout.splitlines() if line.startswith(LINK)]) == 7
 
 
 def test_ac3_no_slack_call_without_a_token(
@@ -100,7 +115,7 @@ def test_ac8_state_dir_and_fixtures_overrides(tmp_path: Path, *, dry_run: bool) 
     )
 
     assert result.exit_code == 0, result.output
-    assert "garden" in (env.out / "bluf.json").read_text(encoding="utf-8")
+    assert "garden" in (env.out / "self" / "bluf.json").read_text(encoding="utf-8")
     assert state.exists() is not dry_run
     assert (state / "snapshots/2026-11-03.json").is_file() is not dry_run
 
@@ -166,7 +181,7 @@ def test_ac8_config_display_name_reaches_the_header(tmp_path: Path) -> None:
     result = env.run("--style", "bluf")
 
     assert result.exit_code == 0, result.output
-    header = json.loads((env.out / "bluf.json").read_text("utf-8"))["blocks"][0]
+    header = json.loads((env.out / "team" / "bluf.json").read_text("utf-8"))["blocks"][0]
     assert header["text"]["text"] == "Dana · Standup · Tue 3 Nov"
 
 
@@ -178,5 +193,19 @@ def test_ac3_without_out_only_prints_the_links(tmp_path: Path) -> None:
     )
 
     assert result.exit_code == 0, result.output
-    assert [line[: len(LINK)] for line in result.stdout.splitlines()] == [LINK]
+    assert [line[: len(LINK)] for line in result.stdout.splitlines()] == [LINK] * 2
     assert list(tmp_path.iterdir()) == []
+
+
+def test_ac3_builder_team_shapes_the_links(tmp_path: Path) -> None:
+    """`render.builder_team` puts the workspace in every Builder link."""
+    env = DemoEnv(tmp_path)
+    env.write_config(extra='[render]\nbuilder_team = "T0123456789"\n')
+
+    result = env.run("--style", "bluf")
+
+    assert result.exit_code == 0, result.output
+    prefix = "https://app.slack.com/block-kit-builder/T0123456789/builder#"
+    assert [line[: len(prefix)] for line in result.stdout.splitlines() if "builder" in line] == [
+        prefix,
+    ] * 2
