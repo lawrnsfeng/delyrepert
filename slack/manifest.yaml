@@ -11,8 +11,12 @@ features:
     always_online: false
   slash_commands:
     - command: /standup
-      description: Run, preview, check, pause or add a note to the standup
-      usage_hint: run|preview|status|pause [YYYY-MM-DD]|resume|note <text>|help
+      description: >-
+        Run, preview, post, pick the reply thread, pause or add a note to the
+        standup
+      usage_hint: >-
+        run|preview|status|pause [YYYY-MM-DD]|resume|note <text>|thread
+        [permalink|name|clear]|post [name]|help
       should_escape: false
 oauth_config:
   scopes:

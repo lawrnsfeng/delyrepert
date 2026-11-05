@@ -19,6 +19,7 @@ from daily_report.config.models import Config
 from daily_report.config.services import ConfigResolver
 from daily_report.effects.commands import DryRunOption, command_effects
 from daily_report.exit_codes import ExitCode, fail
+from daily_report.slack.commands import ThreadOption
 from daily_report.slack_app.dm import DmService
 from daily_report.standup.clipboard import copy_to_clipboard
 from daily_report.standup.exceptions import CopyFormatError
@@ -114,6 +115,7 @@ def _report(
     out: Path | None,
     dm: bool,
     dry_run: bool,
+    thread: str | None = None,
 ) -> None:
     effects = command_effects(ctx, dry_run=dry_run)
     resolver = ConfigResolver(os.environ)
@@ -171,6 +173,7 @@ def _report(
                 effects=effects,
                 style=loop_style,
                 gallery=False,
+                thread=thread,
             ).run()
         else:
             text = _emit(composed, settings, fmt=chosen, style=styles[0], out=out)
@@ -194,6 +197,7 @@ def standup(
     cook: CookOption = False,
     copy: CopyOption = False,
     out: OutOption = None,
+    thread: ThreadOption = None,
     dry_run: DryRunOption = False,
 ) -> None:
     """Report to my team: preview and post it (Slack set up) or print it to paste by hand.
@@ -215,6 +219,7 @@ def standup(
         out=out,
         dm=False,
         dry_run=dry_run,
+        thread=thread,
     )
 
 

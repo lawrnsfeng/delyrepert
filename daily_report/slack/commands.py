@@ -31,6 +31,15 @@ _EXITS: dict[type[TemplatedError], ExitCode] = {
     SlackCallError: ExitCode.SLACK_API,
 }
 
+ThreadOption = Annotated[
+    str | None,
+    typer.Option(
+        "--thread",
+        help="Named thread pattern from [slack.threads.<name>]. "
+        "Default: the pin, else the default pattern.",
+    ),
+]
+
 
 def post(
     ctx: typer.Context,
@@ -47,6 +56,7 @@ def post(
         typer.Option(help="Where it lands. Default: post.target, else thread."),
     ] = None,
     yes: Annotated[bool, typer.Option("--yes", help="Post without asking first.")] = False,
+    thread: ThreadOption = None,
     dry_run: DryRunOption = False,
 ) -> None:
     """Post a draft to Slack as the owner, exactly once."""
@@ -63,6 +73,7 @@ def post(
             token=resolver.slack_token(),
             state_dir=root,
             effects=effects,
+            thread=thread,
         )
     except ConfigError as exc:
         fail(exc, ExitCode.CONFIG)

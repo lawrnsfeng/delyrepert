@@ -59,9 +59,9 @@ async def test_ac4_a_refused_post_replies_with_the_reason(
     """No standup thread today and no target chosen: the owner is told, the run stays pending."""
     await listener.action("standup_post", RUN_ID)
 
-    assert replies(fake_slack) == [
-        "no standup thread found today in #C0STANDUP; rerun with --target channel",
-    ]
+    (reply,) = replies(fake_slack)
+    assert reply.startswith("no thread matches default in #C0STANDUP since ")
+    assert reply.endswith("; pin one with a thread permalink or post with --target channel")
     assert status(pending) == "pending"
     assert fake_slack.called("chat.update") == []
 

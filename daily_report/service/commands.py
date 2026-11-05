@@ -42,6 +42,7 @@ from daily_report.service.services import (
     RunService,
     RunStore,
 )
+from daily_report.slack.commands import ThreadOption
 from daily_report.slack.exceptions import (
     AlreadyPostedError,
     BotTokenError,
@@ -224,6 +225,7 @@ def approve(
         Target | None,
         typer.Option(help="Where it lands. Default: post.target."),
     ] = None,
+    thread: ThreadOption = None,
     dry_run: DryRunOption = False,
 ) -> None:
     """Post a pending run's draft to Slack as the owner."""
@@ -239,6 +241,7 @@ def approve(
             token=env.resolver.slack_token(),
             state_dir=env.root,
             effects=env.effects,
+            thread=thread,
         )
     except (ConfigError, StyleUnsetError) as exc:
         _fail(exc)

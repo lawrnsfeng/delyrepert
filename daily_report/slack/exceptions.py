@@ -26,10 +26,15 @@ class BotTokenError(SlackError):
 
 @dataclass
 class NoParentError(SlackError):
-    """No message in the channel since local midnight matches `slack.parent_match`."""
+    """No message in the lookback window matches the thread pattern."""
 
-    TEMPLATE = "no standup thread found today in #{channel}; rerun with --target channel"
+    TEMPLATE = (
+        "no thread matches {rule} in #{channel} since {since}; "
+        "pin one with a thread permalink or post with --target channel"
+    )
     channel: str
+    rule: str
+    since: str
 
 
 @dataclass

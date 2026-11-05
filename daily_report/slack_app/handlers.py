@@ -16,7 +16,7 @@ from daily_report.service.exceptions import NotPendingError, PastDateError
 from daily_report.service.models import Paused, RunRecord
 from daily_report.service.services import ApproveService, PauseStore, RunStore
 from daily_report.slack.exceptions import AlreadyPostedError
-from daily_report.slack.services import PostService
+from daily_report.slack.services import PostService, ThreadService
 from daily_report.slack_app.dm import DmService
 from daily_report.slack_app.models import DEFAULT_STYLE, HELP
 
@@ -64,6 +64,8 @@ class StandupHandlers:
             "pause": lambda: self._pause(rest),
             "resume": self._resume,
             "note": lambda: self._note(rest),
+            "thread": lambda: self._thread_verb(rest),
+            "post": lambda: self._post_pending(rest),
             "help": self._help,
         }
         if verb not in replies:
@@ -75,23 +77,25 @@ class StandupHandlers:
         run_id: str,
         style: StyleName | None,
         target: Target | None,
+        thread: str | None = None,
     ) -> str | None:
         """Post the draft with the DM's selections; return a reply only when it is refused."""
         settings = self._env.settings
         async with self._lock:
-            approve = ApproveService(
-                runs=self._runs,
-                poster=PostService.from_config(
-                    settings,
-                    token=self._env.resolver.slack_token(),
-                    state_dir=self._env.root,
-                    effects=self._env.effects,
-                ),
-                cutoff=settings.approval_cutoff,
-                zone=settings.zone,
-                now=services.utc_now,
-            )
             try:
+                approve = ApproveService(
+                    runs=self._runs,
+                    poster=PostService.from_config(
+                        settings,
+                        token=self._env.resolver.slack_token(),
+                        state_dir=self._env.root,
+                        effects=self._env.effects,
+                        thread=thread,
+                    ),
+                    cutoff=settings.approval_cutoff,
+                    zone=settings.zone,
+                    now=services.utc_now,
+                )
                 approved = await approve.approve(
                     run_id,
                     style=style or settings.render.style or DEFAULT_STYLE,
@@ -205,3 +209,36 @@ class StandupHandlers:
         except NotesError as exc:
             return str(exc)
         return f"📝 Noted for next standup ({len(self._inbox.pending())} pending)"
+
+    async def _thread_verb(self, arg: str) -> str:
+        threads = ThreadService.from_config(
+            self._env.settings,
+            token=self._env.resolver.slack_token(),
+            state_dir=self._env.root,
+            effects=self._env.effects,
+        )
+        if arg == "clear":
+            return "pin cleared" if await threads.clear_pin() else "no pin set"
+        if arg.startswith("https://"):
+            return f"pinned for the next post: {(await threads.pin_permalink(arg)).permalink}"
+        if arg:
+            return f"pinned {arg}: {(await threads.pin_named(arg)).permalink}"
+        resolved = await threads.show(None)
+        message = resolved.located.message
+        if message is None:
+            return f"thread pin: {resolved.permalink}"
+        return (
+            f"thread {resolved.located.source}: {resolved.permalink}\n"
+            f"from {message.author} · {message.first_line}"
+        )
+
+    async def _post_pending(self, arg: str) -> str:
+        pending = [record for record in self._runs.all() if record.status == "pending"]
+        if not pending:
+            return NO_PENDING
+        run_id = pending[-1].run_id
+        refused = await self.post(run_id, None, None, thread=arg or None)
+        if refused is not None:
+            return refused
+        done = self._runs.load(run_id)
+        return f"✅ Posted {done.posted.permalink if done and done.posted else ''}"

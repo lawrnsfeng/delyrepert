@@ -119,7 +119,7 @@ async def test_ac10_help_unknown_and_empty_verbs(
     await listener.command("")
     await listener.command("bogus")
 
-    usage = "usage: /standup run|preview|status|pause|resume|note|help"
+    usage = "usage: /standup run|preview|status|pause|resume|note|thread|post|help"
     assert replies(fake_slack) == [usage, usage, f"unknown verb bogus\n{usage}"]
 
 

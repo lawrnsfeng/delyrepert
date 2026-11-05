@@ -81,7 +81,8 @@ def test_ac3_no_parent_today_exits_10(env: SlackEnv, fake_slack: FakeSlack) -> N
 
     assert result.exit_code == 10
     assert (
-        "no standup thread found today in #C0STANDUP; rerun with --target channel" in result.stderr
+        "no thread matches default in #C0STANDUP since 2025-11-02; pin one with a thread permalink"
+        in result.stderr
     )
     assert fake_slack.called("chat.postMessage") == []
 
@@ -339,11 +340,11 @@ def test_post_unreachable_slack_exits_9(env: SlackEnv) -> None:
 
 
 def test_post_parent_match_without_a_rule_exits_2(env: SlackEnv, fake_slack: FakeSlack) -> None:
-    """slack.parent_match must set user_id or text_contains."""
+    """slack.parent_match must set at least one rule."""
     env.write_config(match="")
 
     result = env.post("--style", "bluf", "--yes")
 
     assert result.exit_code == 2
-    assert "set user_id or text_contains" in result.stderr
+    assert "set user_id, bot_id, username, text_contains or text_regex" in result.stderr
     assert fake_slack.requests == []

@@ -12,6 +12,7 @@ tools' context into a Slack Block Kit draft in seven styles.
 | `standup` | Report to my team: preview and post, or print it to paste (see [No Slack token? Copy and paste](#no-slack-token-copy-and-paste)). |
 | `self` | Report to myself, in full detail: print it, copy it, or `--dm` it to myself. |
 | `collect`, `compose`, `preview`, `post`, `note`, `run`, `approve` | The steps behind them, below. |
+| `thread list`, `thread show`, `thread pin`, `thread clear` | See and pick the thread `post` replies in (see [docs/slack.md](docs/slack.md#find-the-parent-match)). |
 
 ## Install
 
@@ -51,7 +52,9 @@ Config keys:
 | `render.builder_team` | Optional Slack team ID (`T…`). Block Kit Builder links then use `https://app.slack.com/block-kit-builder/<team>/builder#…`; unset keeps the team-less form, which some workspaces redirect to sign-in and lose the payload. |
 | `emoji.blocked_animated` | Optional animated custom emoji name (no colons) for blocker lines, used only when Slack lists it. |
 | `slack.channel` | Channel ID `post` writes to (`C…`). |
-| `slack.parent_match` | `user_id` and/or `text_contains` that spot today's standup parent message. |
+| `slack.parent_match` | Spots the standup parent message: any of `user_id`, `bot_id`, `username`, `text_contains`, `text_regex`; every one set must match. |
+| `slack.lookback_days` | Days before today the parent may be from (0-7, default 0: since local midnight). |
+| `slack.threads.<name>` | Extra named patterns (`channel`, `parent_match`, `lookback_days`) picked with `--thread <name>`. |
 | `post.target` | Default `thread`; or `thread_broadcast`, `channel`. |
 | `schedule` | `service install`: systemd `OnCalendar=` expression for the scheduled draft (default `Mon..Fri *-*-* 09:00:00`). |
 | `context.commands` | Optional list of `{name, argv}` programs that print context JSON (see below). |
@@ -167,14 +170,16 @@ preview and edit, and posts only after you say "post".
 ## `post`
 
 ```bash
-daily-report post RUN_ID [--style NAME] [--target thread|thread_broadcast|channel] [--yes]
+daily-report post RUN_ID [--style NAME] [--target thread|thread_broadcast|channel] [--thread NAME] [--yes]
 ```
 
 Posts the draft `compose` saved as `RUN_ID`, as you (the user token), exactly
-once. `thread` replies to today's standup parent (the latest message since
-local midnight that matches `slack.parent_match`); `thread_broadcast` also
-shows the reply in the channel; `channel` posts top-level. No parent today
-exits 10 and suggests `--target channel`. A blocker line uses
+once. `thread` replies to the thread `daily-report thread show` reports: today's
+pin, else the latest message in the lookback window that matches
+`slack.parent_match` (or `slack.threads.<NAME>` with `--thread NAME`, which
+also beats a pin); a real post into a pin clears it. `thread_broadcast` also
+shows the reply in the channel; `channel` posts top-level. No parent
+exits 10 and suggests pinning a permalink or `--target channel`. A blocker line uses
 `emoji.blocked_animated` only if `emoji.list` has it, else ⛔. After Slack
 answers `ok`, the draft records `posted` and the notes inbox drops the notes
 the post carried. A second `post` of the same draft exits 8. Without `--yes`
@@ -303,7 +308,8 @@ Under dry-run `compose` saves no draft and `note` leaves the inbox untouched.
 `serve` listens over Slack Socket Mode (no public URL) for `/standup <verb>` and the
 buttons of the approval DM. `run --scheduled` and `/standup run` DM you a preview with
 Post, Edit notes and Skip; nothing reaches the standup channel until you click Post.
-Verbs: `run`, `preview`, `status`, `pause [YYYY-MM-DD]`, `resume`, `note <text>`, `help`.
+Verbs: `run`, `preview`, `status`, `pause [YYYY-MM-DD]`, `resume`, `note <text>`,
+`thread [permalink|name|clear]`, `post [name]`, `help`.
 Anyone but `owner_slack_user_id` gets `not authorized`. Create the app from
 [slack/manifest.yaml](slack/manifest.yaml); setup and the verb table are in
 [docs/service.md](docs/service.md). `--dry-run serve` is a preflight: it calls

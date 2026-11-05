@@ -196,7 +196,7 @@ def test_ac8_no_parent_offers_a_top_level_post(env: SlackEnv, fake_slack: FakeSl
     declined = preview(env, "p\nN\n")
 
     assert declined.exit_code == 0, declined.output
-    assert "no standup thread found today in #C0STANDUP" in declined.stdout
+    assert "no thread matches default in #C0STANDUP since " in declined.stdout
     assert "Post top-level in #C0STANDUP instead? [y/N]" in declined.stdout
     assert fake_slack.called("chat.postMessage") == []
 

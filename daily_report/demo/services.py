@@ -13,7 +13,7 @@ from daily_report.collect.services import CollectService, SnapshotStore
 from daily_report.compose.models import Draft, Mode, SlackPayload, StyleName
 from daily_report.compose.render import Renderer, context
 from daily_report.compose.services import DraftStore
-from daily_report.config.models import CookConfig, JiraConfig, ParentMatch
+from daily_report.config.models import CookConfig, JiraConfig, ParentMatch, ThreadSpec
 from daily_report.context.services import ContextLoader
 from daily_report.cook.services import CookRunner, CookService
 from daily_report.demo.exceptions import (
@@ -180,8 +180,9 @@ class DemoPoster:
 
     async def _post(self, payloads: Rendered, *, broadcast: bool) -> None:
         await self._client.post_message({"channel": self._channel, "text": self._seeded})
-        finder = ParentFinder(self._client, ParentMatch(text_contains=self._parent_text), dt.UTC)
-        thread_ts = await finder.find(self._channel, slack_services.utc_now())
+        spec = ThreadSpec("demo", self._channel, ParentMatch(text_contains=self._parent_text), 0)
+        finder = ParentFinder(self._client, spec, dt.UTC)
+        thread_ts = (await finder.find(slack_services.utc_now())).ts
         for number, ((mode, style), payload) in enumerate(payloads.items(), 1):
             body: dict[str, object] = {"channel": self._channel, "thread_ts": thread_ts}
             if broadcast:

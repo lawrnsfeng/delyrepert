@@ -15,6 +15,7 @@ from daily_report.notes.commands import note
 from daily_report.service.commands import approve, pause, resume, run, status
 from daily_report.service.install_commands import service_app
 from daily_report.slack.commands import post
+from daily_report.slack.thread_commands import thread_app
 from daily_report.slack_app.commands import serve
 from daily_report.standup.commands import self_report, standup
 
@@ -50,3 +51,4 @@ app.command()(status)
 app.command()(serve)
 service_app.command(name="status")(status)
 app.add_typer(service_app, name="service")
+app.add_typer(thread_app, name="thread")

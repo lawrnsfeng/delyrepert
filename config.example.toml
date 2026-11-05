@@ -48,8 +48,19 @@ blocked_animated = "your-animated-emoji"
 # Where `post` puts the standup. See docs/slack.md for the token scopes and the channel ID.
 [slack]
 channel = "C0123456789"
-# Today's standup parent message: the latest one since midnight matching every rule you set.
+# The standup parent message: the latest one in the window matching every rule you set.
+# Rules: user_id, bot_id, username, text_contains, text_regex (see docs/slack.md).
 parent_match = { user_id = "U0123456789", text_contains = "Daily standup" }
+# A bot parent whose words live in attachments or blocks:
+# parent_match = { bot_id = "B0123456789", text_regex = "^Daily standup" }
+# Days before today the parent may be from (0-7; 0 = since local midnight).
+# lookback_days = 1
+
+# Another thread, picked with --thread weekly; channel defaults to slack.channel.
+# [slack.threads.weekly]
+# channel = "C0987654321"
+# parent_match = { username = "Weekly bot", text_contains = "Weekly sync" }
+# lookback_days = 7
 
 [post]
 # thread (default), thread_broadcast (also show in the channel) or channel (top-level).

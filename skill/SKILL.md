@@ -27,10 +27,16 @@ flow and posts nothing.
    cook: if yes, rerun with `--cook` (needs `cook.command`); if stderr shows
    `cook rejected: <cause>`, tell the owner the original wording was kept.
 5. **Post (only if Slack is set up).** `daily-report standup` with `slack.channel` and
-   `SLACK_USER_TOKEN` previews the draft. Only after the owner says "post", run
-   `daily-report post <run-id> --style <style> --yes` (the run id is on the `draft <run-id>` line).
-   If it exits 10 (no standup thread today), ask whether to post top-level and, if yes, rerun with
-   `--target channel`. Show the permalink it prints. Otherwise, if the owner says "cancel", stop.
+   `SLACK_USER_TOKEN` previews the draft. Before posting, run `daily-report thread list`; if it
+   shows more than the `default` pattern, ask the owner which thread to use and pass
+   `--thread <name>` to `post` (and to `thread show`). Run `daily-report thread show` and show the
+   owner the resolved thread (`permalink`, `author`, `text`). If it exits 10 (no thread matches),
+   ask the owner for the standup thread's permalink and run `daily-report thread pin <permalink>`,
+   then continue; the owner may instead choose `--target channel`. Only after the owner says
+   "post", run `daily-report post <run-id> --style <style> --yes [--thread <name>]` (the run id is
+   on the `draft <run-id>` line). Show the permalink it prints. Otherwise, if the owner says
+   "cancel", stop. `daily-report thread clear` removes a pin; a pin also ends after the next post
+   or at midnight.
 
 `daily-report self --dm` also DMs the report to the owner (needs `SLACK_BOT_TOKEN`); it is not a
 post to the team.

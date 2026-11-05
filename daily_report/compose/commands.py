@@ -29,7 +29,7 @@ from daily_report.exit_codes import ExitCode, fail
 from daily_report.jira.exceptions import JiraAuthError
 from daily_report.logger import get_logger
 from daily_report.notes.services import NotesInbox
-from daily_report.slack.commands import _EXITS
+from daily_report.slack.commands import _EXITS, ThreadOption
 from daily_report.slack.services import PostService
 
 
@@ -113,6 +113,7 @@ def _loop(
     effects: Effects,
     style: StyleName | None,
     gallery: bool,
+    thread: str | None = None,
 ) -> PreviewLoop:
     return PreviewLoop(
         draft,
@@ -125,6 +126,7 @@ def _loop(
             token=resolver.slack_token(),
             state_dir=state_dir,
             effects=effects,
+            thread=thread,
         ),
         style=style,
         gallery=gallery,
@@ -241,6 +243,7 @@ def preview(
         Mode | None,
         typer.Option(help="Switch the draft to this mode (saved). Default: the draft's own."),
     ] = None,
+    thread: ThreadOption = None,
     dry_run: DryRunOption = False,
 ) -> None:
     """Preview a saved draft and (in a terminal) prompt to post, edit or cancel."""
@@ -261,6 +264,7 @@ def preview(
         effects=effects,
         style=settings.render.style,
         gallery=gallery,
+        thread=thread,
     )
 
     async def flow() -> None:

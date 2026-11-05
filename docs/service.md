@@ -91,6 +91,11 @@ still posts the standup as you.
 | `/standup pause [YYYY-MM-DD]` | Write `paused.json` with `by: slack`. |
 | `/standup resume` | Delete it. |
 | `/standup note <text>` | Add a note (120 characters, group `today`) for the next standup. |
+| `/standup thread` | Show the thread the next post replies in: `thread pin: <permalink>`, or `thread <name>: <permalink>` plus its sender and first line. |
+| `/standup thread <permalink>` | Pin that thread for the next post (until that post or midnight). |
+| `/standup thread <name>` | Pin what the pattern `default` or `[slack.threads.<name>]` finds now. |
+| `/standup thread clear` | Remove the pin. |
+| `/standup post [name]` | Post the pending draft (default style and target) into today's pin, else the default pattern's parent; `post <name>` uses that pattern and ignores the pin. Replies `✅ Posted <permalink>`. |
 | `/standup help` | List the verbs. |
 
 The approval DM carries Post, Edit notes and Skip. While `render.style` is unset it shows

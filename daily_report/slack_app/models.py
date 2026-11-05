@@ -1,6 +1,6 @@
 from daily_report.compose.models import StyleName, Target
 
-VERBS = ("run", "preview", "status", "pause", "resume", "note", "help")
+VERBS = ("run", "preview", "status", "pause", "resume", "note", "thread", "post", "help")
 ACTION_POST = "standup_post"
 ACTION_EDIT_NOTES = "standup_edit_notes"
 ACTION_SKIP = "standup_skip"

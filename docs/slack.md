@@ -34,10 +34,51 @@ the config as `slack.channel`. The same ID goes in the `[slack]` table of
 
 ## Find the parent match
 
-`slack.parent_match` picks today's standup parent message. Set `user_id` (the
-author's member ID: profile → *⋮* → *Copy member ID*) and/or `text_contains`
-(text of the parent, e.g. `Daily standup`). A message must satisfy every rule you
-set; with several matches since local midnight, the latest wins.
+`slack.parent_match` picks the standup parent message. Every field you set must
+match; set at least one.
+
+| Field | Matches |
+| --- | --- |
+| `user_id` | The author's member ID (profile → *⋮* → *Copy member ID*). |
+| `bot_id` | The posting bot's ID (`B…`), for a parent a bot or workflow sends. |
+| `username` | The display name a bot or webhook posts under. |
+| `text_contains` | Text the parent contains, e.g. `Daily standup`. |
+| `text_regex` | A Python regex searched in the parent's text; checked when the config loads. |
+
+Text rules read the message `text` plus the `text`, `fallback`, `pretext` and
+`title` strings in its blocks and attachments, so a bot parent whose `text` is
+empty still matches:
+
+```toml
+[slack]
+channel = "C0123456789"
+parent_match = { bot_id = "B0123456789", text_contains = "Daily standup" }
+lookback_days = 1  # also look at yesterday (0-7; 0 = since local midnight)
+```
+
+With several matches in the window, the latest wins. Named patterns add other
+threads; `channel` defaults to `slack.channel`, `lookback_days` to 0:
+
+```toml
+[slack.threads.weekly]
+channel = "C0987654321"
+parent_match = { username = "Weekly bot", text_regex = "^Weekly sync" }
+lookback_days = 7
+```
+
+Names are lowercase letters, digits, `-` or `_`; `default` is the top-level
+pattern. `daily-report thread list` prints them all, `thread show [--thread
+NAME]` prints the parent each finds. `post`, `approve`, `preview` and `standup`
+take `--thread NAME`.
+
+`daily-report thread pin <permalink>` (or `/standup thread <permalink>`) pins a
+thread for the next post; a link to a reply pins its thread. The precedence is
+an explicit `--thread` name, then today's pin, then the default pattern;
+`--target channel` ignores pins. A pin ends after the next real post or at
+local midnight; `thread clear` removes it earlier.
+
+Reading history uses the user token with `channels:history` (public) or
+`groups:history` (private channels).
 
 You must be a member of the channel; otherwise Slack answers `not_in_channel`
 and the post exits 9.

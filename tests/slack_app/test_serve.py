@@ -58,7 +58,7 @@ def test_ac15_dry_run_serve_is_a_preflight(
         "verbs: " + " ".join(VERBS),
         "actions: " + " ".join(ACTION_IDS),
     ]
-    assert (len(VERBS), len(ACTION_IDS)) == (7, 5)
+    assert (len(VERBS), len(ACTION_IDS)) == (9, 5)
     assert connection.built == []
 
 

@@ -71,7 +71,7 @@ def test_ac5_no_parent_thread_exits_10_and_stays_pending(pending: ServiceEnv) ->
     assert result.exit_code == 10
     record = status_of(pending)
     assert record["status"] == "pending"
-    assert "no standup thread found" in str(record["error"])
+    assert "no thread matches default in #C0STANDUP" in str(record["error"])
 
 
 def test_ac5_slack_error_exits_9_and_stays_pending(

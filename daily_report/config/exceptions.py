@@ -65,6 +65,31 @@ class SlackUnsetError(ConfigError):
 
 
 @dataclass
+class UnknownThreadError(ConfigError):
+    """A thread name that is neither `default` nor a `[slack.threads.<name>]` key."""
+
+    TEMPLATE = "unknown thread {name}; known: {known}"
+    name: str
+    known: str
+
+
+@dataclass
+class BadPermalinkError(ConfigError):
+    """The value given to pin is not a Slack message link."""
+
+    TEMPLATE = "not a Slack message link: {value}"
+    value: str
+
+
+@dataclass
+class InvalidPinError(ConfigError):
+    """`thread_pin.json` exists but does not validate."""
+
+    TEMPLATE = "invalid thread pin {path}: run `daily-report thread clear`"
+    path: str
+
+
+@dataclass
 class CookUnsetError(ConfigError):
     """`--cook` was given but `cook.command` is empty."""
 

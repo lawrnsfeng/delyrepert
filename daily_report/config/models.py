@@ -1,11 +1,17 @@
+import re
+from dataclasses import dataclass
 from datetime import UTC, datetime, time, tzinfo
 from pathlib import Path
 from typing import Self
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from daily_report.compose.models import StyleName, Target
+from daily_report.config.exceptions import UnknownThreadError
+
+_THREAD_NAME = re.compile(r"[a-z][a-z0-9_-]*")
+_MATCH_FIELDS = ("user_id", "bot_id", "username", "text_contains", "text_regex")
 
 
 class JiraConfig(BaseModel):
@@ -45,17 +51,50 @@ class ContextConfig(BaseModel):
 
 
 class ParentMatch(BaseModel):
-    """The `[slack.parent_match]` table: how to spot today's standup parent message."""
+    """How to spot a standup parent message; every field that is set must match."""
 
     user_id: str | None = None
+    bot_id: str | None = None
+    username: str | None = None
     text_contains: str | None = None
+    text_regex: str | None = None
 
     @model_validator(mode="after")
     def _one_rule(self) -> Self:
-        if self.user_id is None and self.text_contains is None:
-            msg = "set user_id or text_contains"
+        if not self.rules():
+            msg = "set user_id, bot_id, username, text_contains or text_regex"
             raise ValueError(msg)
+        if self.text_regex is not None:
+            try:
+                re.compile(self.text_regex)
+            except re.error as exc:
+                msg = f"text_regex is not a valid regex: {exc}"
+                raise ValueError(msg) from exc
         return self
+
+    def rules(self) -> dict[str, str]:
+        """Return the set fields, in declaration order."""
+        return {
+            name: value for name in _MATCH_FIELDS if (value := getattr(self, name)) is not None
+        }
+
+
+class ThreadRule(BaseModel):
+    """One `[slack.threads.<name>]` table: an extra, named parent pattern."""
+
+    channel: str | None = None  # unset: slack.channel
+    parent_match: ParentMatch
+    lookback_days: int = Field(default=0, ge=0, le=7)
+
+
+@dataclass(frozen=True)
+class ThreadSpec:
+    """A resolved thread pattern: where to look and what to match."""
+
+    name: str
+    channel: str
+    match: ParentMatch
+    lookback_days: int
 
 
 class SlackConfig(BaseModel):
@@ -63,7 +102,35 @@ class SlackConfig(BaseModel):
 
     channel: str  # channel ID, e.g. C0123456789
     parent_match: ParentMatch
+    lookback_days: int = Field(default=0, ge=0, le=7)  # 0: since local midnight
+    threads: dict[str, ThreadRule] = {}
     api_url: str = "https://slack.com/api/"
+
+    @field_validator("threads")
+    @classmethod
+    def _names(cls, threads: dict[str, ThreadRule]) -> dict[str, ThreadRule]:
+        for name in threads:
+            if name == "default" or not _THREAD_NAME.fullmatch(name):
+                msg = (
+                    f"thread name {name!r} must be lowercase letters, digits, - or _ "
+                    "and not 'default'"
+                )
+                raise ValueError(msg)
+        return threads
+
+    def spec(self, name: str | None) -> ThreadSpec:
+        """Return the pattern `name` (`None` or `default`: the top-level one)."""
+        if name is None or name == "default":
+            return ThreadSpec("default", self.channel, self.parent_match, self.lookback_days)
+        rule = self.threads.get(name)
+        if rule is None:
+            raise UnknownThreadError(name, ", ".join(["default", *self.threads]))
+        return ThreadSpec(
+            name,
+            rule.channel or self.channel,
+            rule.parent_match,
+            rule.lookback_days,
+        )
 
 
 class PostConfig(BaseModel):
